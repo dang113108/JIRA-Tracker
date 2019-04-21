@@ -194,7 +194,6 @@ $(function() {
         var today = yyyy + "-" + mm + "-" + dd + "T08: 00: 00.000+0000";
 
         issue = selectize.getValue();
-        console.log(issue);
         issue = issue.split(" - ");
         issue = issue[0];
         timeSpent = $("#timeSpent").val();
@@ -238,6 +237,7 @@ $(function() {
                         selectize.setValue("");
                         selectize.clearOptions();
                         $("#timeSpent").val("");
+                        $("#timeSpent").change();
                         $("#comment").val("");
                         $("#hour").text("0");
                         $("#minute").text("0");
@@ -291,6 +291,9 @@ function secondConvertAndSetTime(second) {
     } else {
         $("#second").text(seconds);
     }
+    if (seconds == 0) {
+        $("#timeSpent").change();
+    }
 }
 
 function startRecord() {
@@ -307,6 +310,7 @@ function startRecord() {
                 chrome.storage.sync.remove(removeData[dataName], function(items) {});
             }
             chrome.storage.sync.set({ 'isStop': false }, function() {});
+            $("#timeSpent").change();
         } else if (isPause) {
             clearInterval(intervalInt);
         } else {
