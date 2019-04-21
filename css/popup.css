@@ -1,0 +1,116 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 20em;
+    -ms-overflow-style: none;
+    overflow: auto;
+    margin：0px !important;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    overflow: -moz-hidden-unscrollable;
+}
+
+
+.collapseButton {
+    margin-right: 10px;
+    color: #0052CC;
+}
+
+.collapseButton:hover {
+    color: #00B8D9;
+}
+
+.collapseLoading {
+    width: 7rem;
+    height: 7rem;
+    float: center;
+    position: absolute;
+    margin-top: 160px;
+    margin-left: 110px;
+}
+
+.collapseMesh {
+    opacity: 0.2;
+    float: center;
+}
+
+.container {
+    padding: 0;
+}
+
+.errorSave {
+    display: none;
+}
+
+.iconButton {
+    margin-right: 0.5em;
+    margin-left: 0.5em;
+    cursor: pointer;
+}
+
+.iconButtonDisable {
+    color: #888888;
+    cursor: not-allowed;
+}
+
+.iconButtons {
+    margin-left: 0.6em;
+}
+
+.loadingSave {
+    display: none;
+}
+
+.logWork {
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+    padding: 20px;
+}
+
+.normalSave {}
+
+.sameline {
+    float: left;
+}
+
+.samelineP {
+    display: flow-root;
+}
+
+.signout {
+    float: right;
+    margin-top: 13.5px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.signout:hover {
+    color: #00B8D9;
+}
+
+.splitLine {
+    color: #0052CC;
+}
+
+.tacker {
+    background: #fff;
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.timeDisplay {
+    margin-right: 0.6em;
+}
+
+.title {
+    background-color: #0052CC;
+    color: #FFFFFF;
+    height: 50px;
+    font-size: 1.5em;
+    line-height: 50px;
+}

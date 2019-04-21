@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Testing</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/combo.select.css"> -->
+    <link rel="stylesheet" type="text/css" href="css/popup.css">
+    <link rel="stylesheet" type="text/css" href="css/selectize.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script src="bootstrap/js/jquery-3.3.1.min.js"></script>
+    <script src="bootstrap/js/popper.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="js/jquery.combo.select.js"></script> -->
+    <script src="js/selectize.min.js"></script>
+    <script src="js/popup.js"></script>
+    <script src="js/account.js"></script>
+    <script src="js/collapse.js"></script>
+</head>
+
+<body>
+    <div class="container tab-content">
+        <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="home-tab">
+            <div align="center" class="title samelineP">
+                JIRA Time Tracker
+                <i class="fas fa-sign-out-alt signout" id="profile-tab"></i>
+            </div>
+            <form class="logWork" id="logWork">
+                <div class="form-group">
+                    <label for="issue">Issue</label>
+                    <select id="issue" required="true">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="timeSpent">Time Spent</label>
+                    <input type="text" class="form-control" id="timeSpent" pattern="([1-2]?[0-9]h\s?[1-5]?[0-9]?m?)|([1-5]?[0-9]m)" title="Format: 23h 59m" required="true">
+                    <small id="timeHelp" class="form-text text-muted">Time spent by hours.</small>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Comment</label>
+                    <textarea class="form-control" id="comment" rows="3"></textarea>
+                </div>
+                <button id="submitWork" type="submit" class="btn btn-primary">
+                    <div class="loadingSave" id="loadingSave">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Saving...
+                    </div>
+                    <div class="normalSave" id="normalSave">
+                        Save
+                    </div>
+                    <div class="errorSave" id="errorSave">
+                        Try again
+                    </div>
+                </button>
+                <button type="reset" class="btn btn-light">Cancel</button>
+            </form>
+            <div class="tacker samelineP">
+                <div class="timeDisplay sameline">
+                    <hour id='hour'>0</hour> hour <minute id='minute'>0</minute> min <second id='second'>0</second> sec
+                </div>
+                <div class="splitLine sameline">|</div>
+                <div class="iconButtons sameline">
+                    <i class="fas fa-play iconButton" id="startRecord" data-toggle="tooltip" data-placement="top" title="Start Record"></i>
+                    <i class="fas fa-pause iconButton iconButtonDisable" id="pauseRecord" data-toggle="tooltip" data-placement="top" title="Pause Record"></i>
+                    <i class="fas fa-stop iconButton iconButtonDisable" id="stopRecord" data-toggle="tooltip" data-placement="top" title="Stop Record"></i>
+                </div>
+            </div>
+            <div align="right" class="collapseButton">
+                <a data-toggle="collapse" href="#collapseLog">
+                    <i id="doubleAngle" class="fas fa-angle-double-down"></i>
+                </a>
+            </div>
+            <div class="collapse" id="collapseLog">
+                <div id="loadWorkDetail" class="spinner-border collapseLoading">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div id="collapseMesh" class="collapseMesh">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item list-group-item-info">
+                            <div><i class="fas fa-user-clock"></i>
+                                <small> this week</small>
+                            </div>
+                            <div id="thisWeek" align="right">00 hour 00 mins</div>
+                        </li>
+                        <li class="list-group-item list-group-item-info">
+                            <div><i class="fas fa-user-clock"></i>
+                                <small> this month</small>
+                            </div>
+                            <div id="thisMonth" align="right">00 hour 00 mins</div>
+                        </li>
+                        <li class="list-group-item list-group-item-success">
+                            <div><i class="fas fa-user-clock"></i>
+                                <small id="thisYMDate"> 00/00 - 00/00</small>
+                            </div>
+                            <div id="thisYM" align="right">00 hour 00 mins</div>
+                        </li>
+                        <li class="list-group-item list-group-item-success">
+                            <div><i class="fas fa-hand-holding-usd"></i>
+                                <small id="thisYMSDate"> 00/00 - 00/00</small>
+                            </div>
+                            <div id="thisYMSalary" align="right">NTD$ 00,000</div>
+                        </li>
+                        <li class="list-group-item list-group-item-danger">
+                            <div><i class="fas fa-user-clock"></i>
+                                <small id="lastYMDate"> 00/00 - 00/00</small>
+                            </div>
+                            <div id="lastYM" align="right">00 hour 00 mins</div>
+                        </li>
+                        <li class="list-group-item list-group-item-danger">
+                            <div><i class="fas fa-hand-holding-usd"></i>
+                                <small id="lastYMSDate"> 00/00 - 00/00</small>
+                            </div>
+                            <div id="lastYMSalary" align="right">NTD$ 00,000</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div align="center" class="title samelineP">
+                JIRA Time Tracker
+            </div>
+            <form class="logWork" id="signInForm">
+                <div class="form-group">
+                    <label for="account">Account</label>
+                    <input type="text" class="form-control" id="account" required="true">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" required="true">
+                    <small><a href="#" data-container="body" data-placement="top" data-toggle="popover" data-trigger="focus" title="Oops!" data-content="I just saved your account information to Chrome without any encryption.">About security?</a></small>
+                </div>
+                <button id="submitSignIn" type="submit" class="btn btn-primary">
+                    <div class="loadingSave" id="loadingSignIn">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Loading...
+                    </div>
+                    <div class="normalSave" id="normalSignIn">
+                        Sign In
+                    </div>
+                    <div class="errorSave" id="errorSignIn">
+                        Try again
+                    </div>
+                </button>
+                <button type="reset" class="btn btn-light">Cancel</button>
+            </form>
+            <div class="tacker samelineP">
+                <div class="timeDisplay sameline">
+                    <hour>0</hour> hour <minute>0</minute> min <second>0</second> sec
+                </div>
+                <div class="splitLine sameline">|</div>
+                <div class="iconButtons sameline">
+                    <i class="fas fa-play iconButton iconButtonDisable" data-toggle="tooltip" data-placement="top" title="Start Record"></i>
+                    <i class="fas fa-pause iconButton iconButtonDisable" data-toggle="tooltip" data-placement="top" title="Pause Record"></i>
+                    <i class="fas fa-stop iconButton iconButtonDisable" data-toggle="tooltip" data-placement="top" title="Stop Record"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

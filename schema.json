@@ -1,0 +1,33 @@
+{
+    "type": "object",
+    "properties":
+    {
+        "token":
+        {
+            "type": "string"
+        },
+        "issue":
+        {
+            "type": "string"
+        },
+        "comment":
+        {
+            "type": "string"
+        },
+        "started":
+        {
+            "type": "string"
+        },
+        "timeSpentSeconds":
+        {
+            "type": "integer"
+        }
+    },
+    "required": [
+        "token",
+        "issue",
+        "comment",
+        "started",
+        "timeSpentSeconds"
+    ]
+}
