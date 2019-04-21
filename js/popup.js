@@ -234,6 +234,13 @@ $(function() {
                         for (var dataName in removeUIData) {
                             chrome.storage.sync.remove(removeUIData[dataName], function(items) {});
                         }
+                        $("#submitWork").addClass("btn-success");
+                        $("#submitWork").removeClass("btn-danger");
+                        $("#submitWork").removeClass("btn-primary");
+                        setTimeout(function() {
+                            $("#submitWork").removeClass("btn-success");
+                            $("#submitWork").addClass("btn-primary");
+                        }, 3000);
                         selectize.setValue("");
                         selectize.clearOptions();
                         $("#timeSpent").val("");
@@ -249,6 +256,7 @@ $(function() {
                         $("#errorSave").show();
                         $("#submitWork").addClass("btn-danger");
                         $("#submitWork").removeClass("btn-primary");
+                        $("#submitWork").removeClass("btn-success");
                         console.log("Log error: ");
                         console.log(e1);
                     }
