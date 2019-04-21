@@ -4,7 +4,7 @@ var isPause = false;
 var isStop = false;
 var saveData = ['startTime', 'pauseTime', 'countSec', 'issue', 'timeSpent', 'comment', 'isRecord', 'isPause', 'isStop', 'account', 'password'];
 var removeData = ['startTime', 'pauseTime', 'countSec', 'isRecord', 'isPause', 'isStop'];
-var removeUIData = ['issue', 'timeSpent', 'comment']
+var removeUIData = ['issue', 'timeSpent', 'comment'];
 
 $(function() {
 
@@ -20,7 +20,7 @@ $(function() {
     });
     var selectize = select[0].selectize;
     $("#issue-selectized").on('keyup', function(key) {
-        if (key.originalEvent.keyCode != 16) {
+        if (key.originalEvent.keyCode != 16 && key.originalEvent.keyCode != 9 && key.originalEvent.keyCode != 27 && key.originalEvent.keyCode != 20 && key.originalEvent.keyCode != 13) {
             $.ajax({
                 type: "POST",
                 dataType: "json",
