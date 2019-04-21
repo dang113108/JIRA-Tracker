@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
 
-    "name": "JIRA Tracker",
-    "description": "This extension will help you to log work time.",
+    "name": "JIRA Time Tracker",
+    "description": "This extension will help you to log work time.\nMade by Robert Chen.",
     "version": "1.0",
 
     "browser_action":
