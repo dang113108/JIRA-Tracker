@@ -62,7 +62,7 @@ $(function() {
     chrome.storage.sync.get(null, function(items) {
         for (var dataName in saveData) {
             if (typeof(items[saveData[dataName]]) !== 'undefined') {
-                this[saveData[dataName]] = items[saveData[dataName]];
+                window[saveData[dataName]] = items[saveData[dataName]];
             }
         }
         if (isRecord) {
