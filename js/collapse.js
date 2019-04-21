@@ -21,6 +21,7 @@ $(function() {
             data: '{"username": "' + account + '","password": "' + password + '"}',
             success: function(msg) {
                 getDate();
+                updateTodayWorkHour();
                 updateWeekHour();
                 updateMonthHour();
                 updateThisCycleHourAndSalary();
@@ -182,6 +183,28 @@ function updateLastCycleHourAndSalary() {
     });
 }
 
+function updateTodayWorkHour() {
+    url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + formatDate(now) + "/dateEnd/" + formatDate(now);
+    $.ajax({
+        type: "GET",
+        url: url,
+        contentType: 'application/json',
+        success: function(jsonArray) {
+            var sumHour = 0.0;
+            for (items in jsonArray) {
+                sumHour += parseFloat(jsonArray[items]['timeSpent']);
+            }
+            mins = 60 * (sumHour - Math.floor(sumHour));
+            $("#toDay").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
+            countSuccess();
+        },
+        error: function(e1, e2, e3) {
+            $("#toDay").text("Err hour Err mins");
+            countSuccess();
+        }
+    });
+}
+
 function updateMonthHour() {
     url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + getMonthStartDate() + "/dateEnd/" + getMonthEndDate();
     $.ajax({
@@ -241,7 +264,7 @@ function formatDate(date) {
 
 function countSuccess() {
     processingCount += 1;
-    if (processingCount >= 4) {
+    if (processingCount >= 5) {
         processingCount = 0;
         $("#collapseMesh").removeClass("collapseMesh");
         $("#loadWorkDetail").hide();
