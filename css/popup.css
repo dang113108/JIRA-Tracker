@@ -15,7 +15,6 @@ html {
     overflow: -moz-hidden-unscrollable;
 }
 
-
 .collapseButton {
     margin-right: 10px;
     color: #0052CC;
@@ -69,7 +68,7 @@ html {
 .logWork {
     background: #fff;
     border-bottom: 1px solid #ccc;
-    padding: 20px;
+    padding: 10px 20px;
 }
 
 .normalSave {}
@@ -84,7 +83,7 @@ html {
 
 .signout {
     float: right;
-    margin-top: 13.5px;
+    margin-top: 11.5px;
     margin-right: 10px;
     cursor: pointer;
 }
@@ -110,7 +109,11 @@ html {
 .title {
     background-color: #0052CC;
     color: #FFFFFF;
-    height: 50px;
+    height: 45px;
     font-size: 1.5em;
-    line-height: 50px;
+    line-height: 45px;
+}
+
+.toDayHour {
+    visibility: hidden;
 }

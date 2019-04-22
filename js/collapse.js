@@ -13,6 +13,8 @@ var processingCount = 0;
 $(function() {
 
     $('#collapseLog').on('show.bs.collapse', function() {
+        $("#loadTodayHour").show();
+        $("#toDay").css("visibility", "hidden");
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -20,6 +22,7 @@ $(function() {
             contentType: 'application/json',
             data: '{"username": "' + account + '","password": "' + password + '"}',
             success: function(msg) {
+                processingCount = 0;
                 getDate();
                 updateTodayWorkHour();
                 updateWeekHour();
@@ -196,6 +199,8 @@ function updateTodayWorkHour() {
             }
             mins = 60 * (sumHour - Math.floor(sumHour));
             $("#toDay").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
+            $("#loadTodayHour").hide();
+            $("#toDay").css("visibility", "visible");
             countSuccess();
         },
         error: function(e1, e2, e3) {

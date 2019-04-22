@@ -233,6 +233,8 @@ $(function() {
                     success: function(msg) {
                         $("#loadingSave").hide();
                         $("#normalSave").show();
+                        $("#loadTodayHour").show();
+                        $("#toDay").css("visibility", "hidden");
                         $("#submitWork").attr('disabled', false);
                         for (var dataName in removeUIData) {
                             chrome.storage.sync.remove(removeUIData[dataName], function(items) {});
@@ -252,6 +254,7 @@ $(function() {
                         $("#hour").text("0");
                         $("#minute").text("0");
                         $("#second").text("0");
+                        updateTodayWorkHour();
                     },
                     error: function(e1, e2, e3) {
                         $("#submitWork").attr('disabled', false);
