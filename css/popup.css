@@ -61,6 +61,14 @@ html {
     margin-left: 0.6em;
 }
 
+.issue {
+    white-space: nowrap;
+}
+
+.issueWorkTime {
+    color: #FF8888 !important;
+}
+
 .loadingSave {
     display: none;
 }
