@@ -7,7 +7,6 @@ var removeData = ['startTime', 'pauseTime', 'countSec', 'isRecord', 'isPause', '
 var removeUIData = ['issue', 'timeSpent', 'comment'];
 
 $(function() {
-
     // chrome.storage.sync.clear(function() {});
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover();
@@ -118,6 +117,10 @@ $(function() {
 
     $("#comment").on('change', function() {
         chrome.storage.sync.set({ 'comment': $("#comment").val() }, function() {});
+    });
+
+    $("#issueWorkTime").on("click", function() {
+        chrome.tabs.create({ url: "https://jira.exosite.com/browse/" + getIssueNumber(selectize.getValue()) });
     });
 
     $("#startRecord").on('click', function() {
@@ -336,7 +339,11 @@ function startRecord() {
 }
 
 function updateIssueWorkTime(issueValue) {
-    if (issueValue == "") { return; }
+    if (issueValue == "") {
+        $("#issueWorkTime").text("");
+        $("#issueWorkTimeDash").hide();
+        return;
+    }
     issue = getIssueNumber(issueValue);
     $.ajax({
         type: "GET",
@@ -350,15 +357,17 @@ function updateIssueWorkTime(issueValue) {
             timeIssueSpentTime = msg['fields']['timetracking']['timeSpentSeconds'];
             if (!issueSpentTime) { issueSpentTime = "0 h"; }
             if (!original) { original = "0 h"; }
-            $("#issueWorkTime").text(" - " + issueSpentTime + " / " + original + " [ " + issueStatus + " ]");
+            $("#issueWorkTimeDash").show();
+            $("#issueWorkTime").text(issueSpentTime + " / " + original + " [ " + issueStatus + " ]");
             if (timeIssueSpentTime > timeOriginal || issueStatus == "Closed") {
-                $("#issueWorkTime").addClass("issueWorkTime");
+                $("#issueWorkTime").addClass("issueWorkTimeWarn");
             } else {
-                $("#issueWorkTime").removeClass("issueWorkTime");
+                $("#issueWorkTime").removeClass("issueWorkTimeWarn");
             }
         },
         error: function(e1, e2, e3) {
             $("#issueWorkTime").text();
+            $("#issueWorkTimeDash").hide();
         }
     });
 }
