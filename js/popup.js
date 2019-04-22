@@ -236,6 +236,7 @@ $(function() {
                         $("#loadTodayHour").show();
                         $("#toDay").css("visibility", "hidden");
                         $("#submitWork").attr('disabled', false);
+                        $("#issueWorkTime").text("");
                         for (var dataName in removeUIData) {
                             chrome.storage.sync.remove(removeUIData[dataName], function(items) {});
                         }
