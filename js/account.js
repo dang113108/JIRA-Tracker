@@ -19,6 +19,7 @@ $(function() {
         $("#submitSignIn").attr('disabled', true);
         $("#loadingSignIn").show();
         $("#normalSignIn").hide();
+        $("#errorSignIn").hide();
 
         $.ajax({
             type: "POST",

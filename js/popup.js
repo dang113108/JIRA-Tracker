@@ -183,6 +183,7 @@ $(function() {
         $("#submitWork").attr('disabled', true);
         $("#loadingSave").show();
         $("#normalSave").hide();
+        $("#errorSave").hide();
 
         var today = new Date();
         var dd = today.getDate();
@@ -341,12 +342,15 @@ function updateIssueWorkTime(issueValue) {
         dataType: "json",
         url: "https://jira.exosite.com/rest/api/2/issue/" + issue,
         success: function(msg) {
+            issueStatus = msg['fields']['status']['name'];
             original = msg['fields']['timetracking']['originalEstimate'];
             timeOriginal = msg['fields']['timetracking']['originalEstimateSeconds'];
             issueSpentTime = msg['fields']['timetracking']['timeSpent'];
             timeIssueSpentTime = msg['fields']['timetracking']['timeSpentSeconds'];
-            $("#issueWorkTime").text(" - " + issueSpentTime + " / " + original);
-            if (timeIssueSpentTime > timeOriginal) {
+            if (!issueSpentTime) { issueSpentTime = "0 h"; }
+            if (!original) { original = "0 h"; }
+            $("#issueWorkTime").text(" - " + issueSpentTime + " / " + original + " [ " + issueStatus + " ]");
+            if (timeIssueSpentTime > timeOriginal || issueStatus == "Closed") {
                 $("#issueWorkTime").addClass("issueWorkTime");
             } else {
                 $("#issueWorkTime").removeClass("issueWorkTime");
