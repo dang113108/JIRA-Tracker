@@ -3,6 +3,7 @@ $(function() {
     chrome.storage.sync.get(['account', 'password'], function(items) {
         if (items['account'] && items['password']) {
             updateTodayWorkHour();
+            $("#issueWorkTimeDash").hide();
             account = items['account'];
             password = items['password'];
             $('#pills-home').tab('show');

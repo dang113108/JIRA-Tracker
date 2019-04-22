@@ -66,6 +66,12 @@ html {
 }
 
 .issueWorkTime {
+    color: #0052CC !important;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.issueWorkTimeWarn {
     color: #FF8888 !important;
 }
 
