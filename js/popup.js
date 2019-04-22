@@ -108,6 +108,7 @@ $(function() {
     selectize.on('change', function() {
         setTimeout(function() {
             chrome.storage.sync.set({ 'issue': selectize.getValue() }, function() {});
+            updateIssueWorkTime(selectize.getValue());
         }, 500);
     });
 
@@ -196,9 +197,7 @@ $(function() {
         }
         var today = yyyy + "-" + mm + "-" + dd + "T08: 00: 00.000+0000";
 
-        issue = selectize.getValue();
-        issue = issue.split(" - ");
-        issue = issue[0];
+        issue = getIssueNumber(selectize.getValue());
         timeSpent = $("#timeSpent").val();
         comment = $("#comment").val();
 
@@ -332,4 +331,35 @@ function startRecord() {
             secondConvertAndSetTime(countSec);
         }
     }, 1000);
+}
+
+function updateIssueWorkTime(issueValue) {
+    if (issueValue == "") { return; }
+    issue = getIssueNumber(issueValue);
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "https://jira.exosite.com/rest/api/2/issue/" + issue,
+        success: function(msg) {
+            original = msg['fields']['timetracking']['originalEstimate'];
+            timeOriginal = msg['fields']['timetracking']['originalEstimateSeconds'];
+            issueSpentTime = msg['fields']['timetracking']['timeSpent'];
+            timeIssueSpentTime = msg['fields']['timetracking']['timeSpentSeconds'];
+            $("#issueWorkTime").text(" - " + issueSpentTime + " / " + original);
+            if (timeIssueSpentTime > timeOriginal) {
+                $("#issueWorkTime").addClass("issueWorkTime");
+            } else {
+                $("#issueWorkTime").removeClass("issueWorkTime");
+            }
+        },
+        error: function(e1, e2, e3) {
+            $("#issueWorkTime").text();
+        }
+    });
+}
+
+function getIssueNumber(issue) {
+    issue = issue.split(" - ");
+    issue = issue[0];
+    return issue;
 }
