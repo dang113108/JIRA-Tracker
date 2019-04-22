@@ -93,9 +93,11 @@ $(function() {
             });
             selectize.setValue(issue);
         }
-        if (timeSpent != '[object HTMLInputElement]') {
+        if (timeSpent != '[object HTMLInputElement]' && !isRecord) {
             $("#timeSpent").val(timeSpent);
-            $("#timeSpent").change();
+            setTimeout(function() {
+                $("#timeSpent").change();
+            }, 1000);
         }
 
         if (comment != '[object HTMLTextAreaElement]') {
