@@ -95,6 +95,7 @@ $(function() {
         }
         if (timeSpent != '[object HTMLInputElement]') {
             $("#timeSpent").val(timeSpent);
+            $("#timeSpent").change();
         }
 
         if (comment != '[object HTMLTextAreaElement]') {
