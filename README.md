@@ -21,3 +21,4 @@
  - Usage
  - New version notify
  - List issue status
+ - List the PR which is assigned user
