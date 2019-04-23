@@ -2,12 +2,21 @@ $(function() {
 
     chrome.storage.sync.get(['account', 'password'], function(items) {
         if (items['account'] && items['password']) {
-            updateTodayWorkHour();
             $("#issueWorkTimeDash").hide();
-            account = items['account'];
-            password = items['password'];
             $('#pills-home').tab('show');
             $('#pills-profile').removeClass('active show');
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "https://jira.exosite.com/rest/auth/1/session",
+                contentType: 'application/json',
+                data: '{"username": "' + account + '","password": "' + password + '"}',
+                success: function(msg) {
+                    updateTodayWorkHour();
+                    account = items['account'];
+                    password = items['password'];
+                }
+            });
         }
     });
 
