@@ -17,4 +17,7 @@
  
 #
 
-### TODO: Usage, new version notify
+### TODO: 
+ - Usage
+ - New version notify
+ - List issue status
