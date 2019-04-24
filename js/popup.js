@@ -2,8 +2,8 @@ var countSec = 0;
 var isRecord = false;
 var isPause = false;
 var isStop = false;
-var saveData = ['startTime', 'pauseTime', 'countSec', 'issue', 'timeSpent', 'comment', 'isRecord', 'isPause', 'isStop', 'account', 'password'];
-var removeData = ['startTime', 'pauseTime', 'countSec', 'isRecord', 'isPause', 'isStop'];
+var saveData = ['startTime', 'countSec', 'issue', 'timeSpent', 'comment', 'isRecord', 'isPause', 'isStop', 'account', 'password'];
+var removeData = ['startTime', 'countSec', 'isRecord', 'isPause', 'isStop'];
 var removeUIData = ['issue', 'timeSpent', 'comment'];
 
 $(function() {
@@ -76,11 +76,6 @@ $(function() {
             $("#stopRecord").removeClass('iconButtonDisable');
         }
         if (isPause) {
-            var elapsed = pauseTime - startTime;
-            countSec += elapsed;
-            chrome.storage.sync.set({ 'countSec': countSec }, function() {});
-            chrome.storage.sync.set({ 'startTime': 0 }, function() {});
-            chrome.storage.sync.set({ 'pauseTime': 0 }, function() {});
             secondConvertAndSetTime(countSec);
             $("#startRecord").removeClass('iconButtonDisable');
             $("#pauseRecord").addClass('iconButtonDisable');
@@ -130,13 +125,6 @@ $(function() {
         if (isPause) {
             isPause = false;
             chrome.storage.sync.set({ 'isPause': false }, function() {});
-            chrome.storage.sync.get('startTime', function(startTime) {
-                chrome.storage.sync.get('pauseTime', function(pauseTime) {
-                    var elapsed = pauseTime['pauseTime'] - startTime['startTime'];
-                    countSec += elapsed;
-                    chrome.storage.sync.set({ 'countSec': countSec }, function() {});
-                });
-            });
         }
         chrome.storage.sync.set({ 'startTime': getTimestamp() }, function() {});
         startRecord();
@@ -156,7 +144,7 @@ $(function() {
         $("#startRecord").removeClass('iconButtonDisable');
         $("#pauseRecord").addClass('iconButtonDisable');
         $("#stopRecord").removeClass('iconButtonDisable');
-        chrome.storage.sync.set({ 'pauseTime': getTimestamp() }, function() {});
+        chrome.storage.sync.set({ 'countSec': countSec }, function() {});
         chrome.storage.sync.set({ 'isRecord': false }, function() {});
         chrome.storage.sync.set({ 'isPause': true }, function() {});
     });
@@ -316,6 +304,7 @@ function secondConvertAndSetTime(second) {
 
 function startRecord() {
     var intervalInt = setInterval(function() {
+        console.log("here");
         if (isStop) {
             clearInterval(intervalInt);
             isStop = false;
@@ -331,6 +320,7 @@ function startRecord() {
             $("#timeSpent").change();
         } else if (isPause) {
             clearInterval(intervalInt);
+            return;
         } else {
             countSec += 1;
             secondConvertAndSetTime(countSec);
