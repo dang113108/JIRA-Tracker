@@ -285,13 +285,17 @@ function secondConvertAndSetTime(second) {
     if (second >= 3600) {
         hour = Math.floor(second / 3600);
         minute = Math.floor((second - (3600 * hour)) / 60);
-        $("#timeSpent").val(hour + "h " + minute + "m");
+        if (seconds == 0) {
+            $("#timeSpent").val(hour + "h " + minute + "m");
+        }
         $("#hour").text(hour);
         $("#minute").text(minute);
         $("#second").text(seconds);
     } else if (second >= 60) {
         minute = Math.floor(second / 60);
-        $("#timeSpent").val(minute + "m");
+        if (seconds == 0) {
+            $("#timeSpent").val(minute + "m");
+        }
         $("#minute").text(minute);
         $("#second").text(seconds);
     } else {
