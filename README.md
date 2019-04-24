@@ -22,3 +22,4 @@
  - New version notify
  - List issue status
  - List the PR which is assigned user
+ - When start next record but not save yet, you will not change the time spent
