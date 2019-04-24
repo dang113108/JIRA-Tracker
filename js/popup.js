@@ -15,7 +15,8 @@ $(function() {
         valueField: 'title',
         labelField: 'title',
         searchField: 'title',
-        create: false
+        create: false,
+        selectOnTab: true
     });
     var selectize = select[0].selectize;
     $("#issue-selectized").on('keyup', function(key) {
