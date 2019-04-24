@@ -38,6 +38,7 @@ $(function() {
             contentType: 'application/json',
             data: '{"username": "' + account + '","password": "' + password + '"}',
             success: function(msg) {
+                updateTodayWorkHour();
                 chrome.storage.sync.set({ 'account': account }, function() {});
                 chrome.storage.sync.set({ 'password': password }, function() {});
                 $('#pills-home').tab('show');
