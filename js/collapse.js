@@ -118,7 +118,11 @@ function updateThisCycleHourAndSalary() {
     }
     thisYM = nowYear + "-" + thisM;
     lastYM = lastYear + "-" + lastM;
-    url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + lastYM + "-21/dateEnd/" + thisYM + "-20";
+    if (account == "markchang") {
+        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/mark chung/dateStart/" + lastYM + "-21/dateEnd/" + thisYM + "-20";
+    } else {
+        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + lastYM + "-21/dateEnd/" + thisYM + "-20";
+    }
     $.ajax({
         type: "GET",
         url: url,
@@ -160,7 +164,11 @@ function updateLastCycleHourAndSalary() {
     }
     lastYM = lastYear + "-" + lastM;
     llastYM = llastYear + "-" + llastM;
-    url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + llastYM + "-21/dateEnd/" + lastYM + "-20";
+    if (account == "markchang") {
+        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/mark chung/dateStart/" + llastYM + "-21/dateEnd/" + lastYM + "-20";
+    } else {
+        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + llastYM + "-21/dateEnd/" + lastYM + "-20";
+    }
     $.ajax({
         type: "GET",
         url: url,
@@ -187,7 +195,11 @@ function updateLastCycleHourAndSalary() {
 }
 
 function updateTodayWorkHour() {
-    url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + formatDate(now) + "/dateEnd/" + formatDate(now);
+    if (account == "markchang") {
+        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/mark chung/dateStart/" + formatDate(now) + "/dateEnd/" + formatDate(now);
+    } else {
+        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + formatDate(now) + "/dateEnd/" + formatDate(now);
+    }
     $.ajax({
         type: "GET",
         url: url,
@@ -211,7 +223,11 @@ function updateTodayWorkHour() {
 }
 
 function updateMonthHour() {
-    url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + getMonthStartDate() + "/dateEnd/" + getMonthEndDate();
+    if (account == "markchang") {
+        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/mark chung/dateStart/" + getMonthStartDate() + "/dateEnd/" + getMonthEndDate();
+    } else {
+        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + getMonthStartDate() + "/dateEnd/" + getMonthEndDate();
+    }
     $.ajax({
         type: "GET",
         url: url,
@@ -233,7 +249,11 @@ function updateMonthHour() {
 }
 
 function updateWeekHour() {
-    url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + getWeekStartDate() + "/dateEnd/" + getWeekEndDate();
+    if (account == "markchang") {
+        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/mark chung/dateStart/" + getWeekStartDate() + "/dateEnd/" + getWeekEndDate();
+    } else {
+        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + getWeekStartDate() + "/dateEnd/" + getWeekEndDate();
+    }
     $.ajax({
         type: "GET",
         url: url,
