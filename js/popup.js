@@ -78,7 +78,7 @@ chrome.storage.sync.get(null, function(items) {
     if (isRecord) {
         var elapsed = getTimestamp() - startTime;
         countSec += elapsed;
-        secondConvertAndSetTime(countSec);
+        secondConvertAndSetTime(countSec, true);
         chrome.storage.sync.set({ 'countSec': countSec }, function() {});
         chrome.storage.sync.set({ 'startTime': getTimestamp() }, function() {});
         startRecord()
@@ -87,7 +87,7 @@ chrome.storage.sync.get(null, function(items) {
         $("#stopRecord").removeClass('iconButtonDisable');
     }
     if (isPause) {
-        secondConvertAndSetTime(countSec);
+        secondConvertAndSetTime(countSec, true);
         $("#startRecord").removeClass('iconButtonDisable');
         $("#pauseRecord").addClass('iconButtonDisable');
         $("#stopRecord").removeClass('iconButtonDisable');
@@ -98,7 +98,7 @@ chrome.storage.sync.get(null, function(items) {
         });
         selectize.setValue(issue);
     }
-    if (timeSpent != '[object HTMLInputElement]' && !isRecord) {
+    if (timeSpent != '[object HTMLInputElement]' && !isRecord && !isPause) {
         $("#timeSpent").val(timeSpent);
         setTimeout(function() {
             $("#timeSpent").change();
@@ -206,10 +206,14 @@ $("#logWork").on('submit', function(e) {
 
     timeSpent = timeSpent.substring(0, timeSpent.length - 1);
     timeSpent = timeSpent.split("h");
-    if (timeSpent.length == 2) {
-        totalTime = timeSpent[0] * 3600 + timeSpent[1] * 60;
+    if (timeSpent.indexOf("h")) {
+        if (timeSpent.length == 2) {
+            totalTime = timeSpent[0] * 3600 + timeSpent[1] * 60;
+        } else {
+            totalTime = timeSpent[0] * 3600;
+        }
     } else {
-        totalTime = timeSpent[0] * 60;
+        totalTime = timeSpent * 60;
     }
 
     workData = '{"comment":"' + comment + '","started":"' + today + '","timeSpentSeconds":"' + totalTime + '"}';
@@ -287,24 +291,24 @@ $("#logWork").on('submit', function(e) {
 
 function getTimestamp() {
     var dateTime = Date.now();
-    var timestamp = Math.floor(dateTime / 1000);
+    var timestamp = Math.round(dateTime / 1000);
     return timestamp;
 }
 
-function secondConvertAndSetTime(second) {
+function secondConvertAndSetTime(second, reopen=false) {
     seconds = second % 60;
     if (second >= 3600) {
-        hour = Math.floor(second / 3600);
-        minute = Math.floor((second - (3600 * hour)) / 60);
-        if (seconds == 0) {
+        hour = Math.round(second / 3600);
+        minute = Math.round((second - (3600 * hour)) / 60);
+        if (seconds == 0 || reopen) {
             $("#timeSpent").val(hour + "h " + minute + "m");
         }
         $("#hour").text(hour);
         $("#minute").text(minute);
         $("#second").text(seconds);
     } else if (second >= 60) {
-        minute = Math.floor(second / 60);
-        if (seconds == 0) {
+        minute = Math.round(second / 60);
+        if (seconds == 0 || reopen) {
             $("#timeSpent").val(minute + "m");
         }
         $("#minute").text(minute);
