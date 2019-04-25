@@ -28,7 +28,11 @@ $("#issue-selectized").on('keyup', function(key) {
     }
     if (pressKeyCode == 16 || pressKeyCode == 9 || pressKeyCode == 27 || pressKeyCode == 20 || pressKeyCode == 13) {
         if (pressKeyCode == 9 || pressKeyCode == 27 || pressKeyCode == 13) {
-            this.close();
+            selectize.disable();
+            setTimeout(function() {
+                selectize.enable();
+                $("#timeSpent").focus();
+            }, 1000);
         }
         return;
     }
@@ -323,7 +327,6 @@ function secondConvertAndSetTime(second, reopen=false) {
 
 function startRecord() {
     var intervalInt = setInterval(function() {
-        console.log("here");
         if (isStop) {
             clearInterval(intervalInt);
             isStop = false;
