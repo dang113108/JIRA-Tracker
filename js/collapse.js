@@ -134,7 +134,7 @@ function updateThisCycleHourAndSalary() {
             }
             mins = 60 * (sumHour - Math.floor(sumHour));
             salary = Math.floor(sumHour * 150);
-            $("#thisYM").text(Math.floor(sumHour) + " hour " + Math.floor(mins) + " mins");
+            $("#thisYM").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
             $("#thisYMSalary").text("NTD$ " + parseFloat(salary).toLocaleString());
             $("#thisYMDate").text(lastM + "/21 - " + thisM + "/20");
             $("#thisYMSDate").text(lastM + "/21 - " + thisM + "/20");
@@ -180,7 +180,7 @@ function updateLastCycleHourAndSalary() {
             }
             mins = 60 * (sumHour - Math.floor(sumHour));
             salary = Math.floor(sumHour * 150);
-            $("#lastYM").text(Math.floor(sumHour) + " hour " + Math.floor(mins) + " mins");
+            $("#lastYM").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
             $("#lastYMSalary").text("NTD$ " + parseFloat(salary).toLocaleString());
             $("#lastYMDate").text(llastM + "/21 - " + lastM + "/20");
             $("#lastYMSDate").text(llastM + "/21 - " + lastM + "/20");
@@ -210,7 +210,7 @@ function updateTodayWorkHour() {
                 sumHour += parseFloat(jsonArray[items]['timeSpent']);
             }
             mins = 60 * (sumHour - Math.floor(sumHour));
-            $("#toDay").text(Math.floor(sumHour) + " hour " + Math.floor(mins) + " mins");
+            $("#toDay").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
             $("#loadTodayHour").hide();
             $("#toDay").css("visibility", "visible");
             countSuccess();
@@ -238,7 +238,7 @@ function updateMonthHour() {
                 sumHour += parseFloat(jsonArray[items]['timeSpent']);
             }
             mins = 60 * (sumHour - Math.floor(sumHour));
-            $("#thisMonth").text(Math.floor(sumHour) + " hour " + Math.floor(mins) + " mins");
+            $("#thisMonth").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
             countSuccess();
         },
         error: function(e1, e2, e3) {
