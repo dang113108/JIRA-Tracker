@@ -116,6 +116,10 @@ html {
     border-bottom: 1px solid #ccc;
 }
 
+.ticketIcon {
+    margin: 3px;
+}
+
 .timeDisplay {
     margin-right: 0.6em;
 }

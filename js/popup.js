@@ -2,9 +2,9 @@ var countSec = 0;
 var isRecord = false;
 var isPause = false;
 var isStop = false;
-var saveData = ['startTime', 'countSec', 'issue', 'timeSpent', 'comment', 'isRecord', 'isPause', 'isStop', 'account', 'password'];
+var saveData = ['img', 'startTime', 'countSec', 'issue', 'timeSpent', 'comment', 'isRecord', 'isPause', 'isStop', 'account', 'password'];
 var removeData = ['startTime', 'countSec', 'isRecord', 'isPause', 'isStop'];
-var removeUIData = ['issue', 'timeSpent', 'comment'];
+var removeUIData = ['img', 'issue', 'timeSpent', 'comment'];
 
 $(function() {
 // chrome.storage.sync.clear(function() {});
@@ -16,7 +16,15 @@ var select = $("#issue").selectize({
     labelField: 'title',
     searchField: 'title',
     create: false,
-    selectOnTab: true
+    selectOnTab: true,
+    render: {
+        item: function(item, escape) {
+            return "<div class='ticketIcon'><img src='" + escape(item.img) + "' </img> " + escape(item.title) + "</div>";
+        },
+        option: function(item, escape) {
+            return "<div class='ticketIcon'><img src='" + escape(item.img) + "' </img> " + escape(item.title) + "</div>";
+        }
+    }
 });
 var selectize = select[0].selectize;
 
@@ -55,6 +63,7 @@ $("#issue-selectized").on('keyup', function(key) {
                     selectize.clearOptions();
                     for (ticket in msg) {
                         selectize.addOption({
+                            img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
                             title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
                         });
                     }
@@ -98,6 +107,7 @@ chrome.storage.sync.get(null, function(items) {
     }
     if (issue != '[object HTMLSelectElement]' && issue != '') {
         selectize.addOption({
+            img: img,
             title: issue
         });
         selectize.setValue(issue);
@@ -117,6 +127,7 @@ chrome.storage.sync.get(null, function(items) {
 selectize.on('change', function() {
     setTimeout(function() {
         chrome.storage.sync.set({ 'issue': selectize.getValue() }, function() {});
+        chrome.storage.sync.set({ 'img': selectize.getItem(selectize.getValue())[0]['children'][0]['currentSrc'] }, function() {});
         updateIssueWorkTime(selectize.getValue());
     }, 500);
 });
