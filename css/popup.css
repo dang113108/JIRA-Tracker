@@ -63,7 +63,7 @@ html {
 
 .issue {
     white-space: nowrap;
-    max-height: 43px;
+    line-height: 10px;
 }
 
 .issueWorkTime {
