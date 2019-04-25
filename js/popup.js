@@ -19,10 +19,10 @@ var select = $("#issue").selectize({
     selectOnTab: true,
     render: {
         item: function(item, escape) {
-            return "<div class='ticketIcon'><img src='" + escape(item.img) + "' </img> " + escape(item.title) + "</div>";
+            return "<div><img class='ticketIcon' src='" + escape(item.img) + "'></img> <issue class='ticketText'>" + escape(item.title) + "</issue></div>";
         },
         option: function(item, escape) {
-            return "<div class='ticketIcon'><img src='" + escape(item.img) + "' </img> " + escape(item.title) + "</div>";
+            return "<div><img class='ticketIcon' src='" + escape(item.img) + "'></img> <issue class='ticketText'>" + escape(item.title) + "</issue></div>";
         }
     }
 });

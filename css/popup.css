@@ -63,6 +63,7 @@ html {
 
 .issue {
     white-space: nowrap;
+    max-height: 43px;
 }
 
 .issueWorkTime {
@@ -117,7 +118,11 @@ html {
 }
 
 .ticketIcon {
-    margin: 3px;
+    padding: 3px;
+}
+
+.ticketText {
+    line-height: 22px;
 }
 
 .timeDisplay {
