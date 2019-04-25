@@ -314,8 +314,8 @@ function getTimestamp() {
 function secondConvertAndSetTime(second, reopen = false) {
     seconds = second % 60;
     if (second >= 3600) {
-        hour = Math.round(second / 3600);
-        minute = Math.round((second - (3600 * hour)) / 60);
+        hour = Math.floor(second / 3600);
+        minute = Math.floor((second - (3600 * hour)) / 60);
         if (seconds == 0 || reopen) {
             $("#timeSpent").val(hour + "h " + minute + "m");
         }
@@ -323,7 +323,7 @@ function secondConvertAndSetTime(second, reopen = false) {
         $("#minute").text(minute);
         $("#second").text(seconds);
     } else if (second >= 60) {
-        minute = Math.round(second / 60);
+        minute = Math.floor(second / 60);
         if (seconds == 0 || reopen) {
             $("#timeSpent").val(minute + "m");
         }
