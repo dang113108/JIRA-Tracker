@@ -86,7 +86,9 @@ html {
     padding: 10px 20px;
 }
 
-.normalSave {}
+.newVersion {
+    color: #c9510c !important;
+}
 
 .sameline {
     float: left;
@@ -139,4 +141,14 @@ html {
 
 .toDayHour {
     visibility: hidden;
+}
+
+.versionButton {
+    margin-left: 10px;
+    color: #333333;
+    cursor: pointer;
+}
+
+.versionButton:hover {
+    color: #6cc644;
 }
