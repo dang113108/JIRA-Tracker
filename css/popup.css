@@ -86,10 +86,6 @@ html {
     padding: 10px 20px;
 }
 
-.newVersion {
-    color: #c9510c !important;
-}
-
 .sameline {
     float: left;
 }
@@ -151,4 +147,9 @@ html {
 
 .versionButton:hover {
     color: #6cc644;
+}
+
+.versionText {
+    padding: 0 10px;
+    border-radius: 20px;
 }
