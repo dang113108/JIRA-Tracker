@@ -2,7 +2,7 @@ var countSec = 0;
 var isRecord = false;
 var isPause = false;
 var isStop = false;
-var version = "v0.1.0";
+var version = "v0.1.1";
 var saveData = ['img', 'startTime', 'countSec', 'issue', 'timeSpent', 'comment', 'isRecord', 'isPause', 'isStop', 'account', 'password'];
 var removeData = ['startTime', 'countSec', 'isRecord', 'isPause', 'isStop'];
 var removeUIData = ['img', 'issue', 'timeSpent', 'comment'];
@@ -417,6 +417,7 @@ function checkVersion(appVer) {
             masterVer = msg['commit']['commit']['message'];
             if (appVer != masterVer) {
                 $("#versionText").text("NEW VERSION");
+                $("#versionText").addClass("text-light bg-danger");
             }
         },
         error: function(e1, e2, e3) {
