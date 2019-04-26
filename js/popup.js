@@ -414,7 +414,7 @@ function checkVersion(appVer) {
         dataType: "json",
         url: "https://api.github.com/repos/dang113108/JIRA-Tracker/branches/master",
         success: function(msg) {
-            masterVer = msg['commit']['message'];
+            masterVer = msg['commit']['commit']['message'];
             if (appVer != masterVer) {
                 $("#versionText").text("NEW VERSION");
             }
