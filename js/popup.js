@@ -2,7 +2,8 @@ var countSec = 0;
 var isRecord = false;
 var isPause = false;
 var isStop = false;
-var version = "v0.1.1";
+var isTyping = 0;
+var version = "v0.1.3";
 var saveData = ['img', 'startTime', 'countSec', 'issue', 'timeSpent', 'comment', 'isRecord', 'isPause', 'isStop', 'account', 'password'];
 var removeData = ['startTime', 'countSec', 'isRecord', 'isPause', 'isStop'];
 var removeUIData = ['img', 'issue', 'timeSpent', 'comment'];
@@ -32,19 +33,18 @@ $(function() {
     $("#issue").attr('max-height', '43px');
 
     $("#issue-selectized").on('keyup', function(key) {
+        isTyping++;
+        var typingNum = isTyping;
         if (key.originalEvent.keyCode) {
             var pressKeyCode = key.originalEvent.keyCode;
         } else {
             var pressKeyCode = false;
         }
-        if (pressKeyCode == 16 || pressKeyCode == 9 || pressKeyCode == 27 || pressKeyCode == 20 || pressKeyCode == 13) {
-            if (pressKeyCode == 9 || pressKeyCode == 27 || pressKeyCode == 13) {
-                selectize.disable();
-                setTimeout(function() {
-                    selectize.enable();
-                    $("#timeSpent").focus();
-                }, 1000);
-            }
+        if (pressKeyCode == 9 || pressKeyCode == 27 || pressKeyCode == 13) {
+            isTyping = 0;
+            return;
+        }
+        if (pressKeyCode == 27 || pressKeyCode == 40 || pressKeyCode == 38 || pressKeyCode == 37 || pressKeyCode == 39) {
             return;
         }
         $.ajax({
@@ -64,13 +64,17 @@ $(function() {
                     url: "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/search-issues-picker?q=" + $("#issue-selectized").val(),
                     success: function(msg) {
                         selectize.clearOptions();
+                        var optionArray = [];
                         for (ticket in msg) {
-                            selectize.addOption({
+                            optionArray.push({
                                 img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
                                 title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
                             });
                         }
-                        selectize.refreshOptions(true);
+                        if (isTyping == typingNum) {
+                            selectize.addOption(optionArray);
+                            selectize.refreshOptions(true);
+                        }
                     },
                     error: function(e1, e2, e3) {
                         console.log("Search error: ");
@@ -223,8 +227,8 @@ $(function() {
         comment = $("#comment").val();
 
         timeSpent = timeSpent.substring(0, timeSpent.length - 1);
-        timeSpent = timeSpent.split("h");
-        if (timeSpent.indexOf("h")) {
+        if (timeSpent.indexOf("h") != -1) {
+            timeSpent = timeSpent.split("h");
             if (timeSpent.length == 2) {
                 totalTime = timeSpent[0] * 3600 + timeSpent[1] * 60;
             } else {
@@ -306,7 +310,7 @@ $(function() {
     });
 
     $("#versionText").on('click', function() {
-        chrome.tabs.create({ url: "https://github.com/dang113108/JIRA-Tracker"});
+        chrome.tabs.create({ url: "https://github.com/dang113108/JIRA-Tracker" });
     });
 
 });
