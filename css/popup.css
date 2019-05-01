@@ -94,6 +94,10 @@ html {
     display: flow-root;
 }
 
+.selectizeInputRed {
+    border-color: red !important;
+}
+
 .signout {
     float: right;
     margin-top: 11.5px;
