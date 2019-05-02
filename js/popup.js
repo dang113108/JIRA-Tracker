@@ -2,8 +2,7 @@ var countSec = 0;
 var isRecord = false;
 var isPause = false;
 var isStop = false;
-var isTyping = 0;
-var version = "v0.1.3";
+var version = "v0.1.3h";
 var saveData = ['img', 'startTime', 'countSec', 'issue', 'timeSpent', 'comment', 'isRecord', 'isPause', 'isStop', 'account', 'password'];
 var removeData = ['startTime', 'countSec', 'isRecord', 'isPause', 'isStop'];
 var removeUIData = ['img', 'issue', 'timeSpent', 'comment'];
@@ -226,8 +225,10 @@ $(function() {
         timeSpent = $("#timeSpent").val();
         comment = $("#comment").val();
 
-        timeSpent = timeSpent.substring(0, timeSpent.length - 1);
         if (timeSpent.indexOf("h") != -1) {
+            if (timeSpent.indexOf("m") != -1) {
+                timeSpent = timeSpent.substring(0, timeSpent.length - 1);
+            }
             timeSpent = timeSpent.split("h");
             if (timeSpent.length == 2) {
                 totalTime = timeSpent[0] * 3600 + timeSpent[1] * 60;
@@ -235,6 +236,7 @@ $(function() {
                 totalTime = timeSpent[0] * 3600;
             }
         } else {
+            timeSpent = timeSpent.substring(0, timeSpent.length - 1);
             totalTime = timeSpent * 60;
         }
 
@@ -352,7 +354,7 @@ function startRecord() {
         if (isStop) {
             clearInterval(intervalInt);
             isStop = false;
-            secondConvertAndSetTime(countSec + 30);
+            secondConvertAndSetTime(countSec + 30, true);
             countSec = 0;
             $("#hour").text(0);
             $("#minute").text(0);
