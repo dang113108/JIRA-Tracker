@@ -2,7 +2,7 @@ var countSec = 0;
 var isRecord = false;
 var isPause = false;
 var isStop = false;
-var version = "v0.1.3h";
+var isTyping = 0;
 var saveData = ['img', 'startTime', 'countSec', 'issue', 'timeSpent', 'comment', 'isRecord', 'isPause', 'isStop', 'account', 'password'];
 var removeData = ['startTime', 'countSec', 'isRecord', 'isPause', 'isStop'];
 var removeUIData = ['img', 'issue', 'timeSpent', 'comment'];
@@ -11,7 +11,6 @@ $(function() {
     // chrome.storage.sync.clear(function() {});
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover();
-    checkVersion(version);
 
     var select = $("#issue").selectize({
         valueField: 'title',
@@ -19,32 +18,88 @@ $(function() {
         searchField: 'title',
         create: false,
         selectOnTab: true,
+        optgroupField: 'class',
+        optgroups: [
+            { value: 'recentIssues', label: 'Recent Issues' }
+        ],
         render: {
             item: function(item, escape) {
                 return "<div><img class='ticketIcon' src='" + escape(item.img) + "'></img> <issue class='ticketText'>" + escape(item.title) + "</issue></div>";
             },
             option: function(item, escape) {
                 return "<div><img class='ticketIcon' src='" + escape(item.img) + "'></img> <issue class='ticketText'>" + escape(item.title) + "</issue></div>";
+            },
+            optgroup_header: function(item, escape) {
+                return '<div class="optgroup-header">' + escape(item.label) + '</div>';
             }
         }
     });
     var selectize = select[0].selectize;
     $("#issue").attr('max-height', '43px');
 
+    $("#issue-selectized").on('focus', function() {
+        if ($("#issue-selectized").val() != "") {
+            return;
+        }
+        isTyping++;
+        var typingNum = isTyping;
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "https://jira.exosite.com/rest/auth/1/session",
+            contentType: 'application/json',
+            data: '{"username": "' + account + '","password": "' + password + '"}',
+            success: function(msg) {
+                $.ajax({
+                    type: "GET",
+                    beforeSend: function(request) {
+                        request.setRequestHeader("Access-Control-Allow-Origin", "https://jira.exosite.com");
+                        request.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                        request.setRequestHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Authorization");
+                    },
+                    url: "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/search-issues-picker?q=",
+                    success: function(msg) {
+                        selectize.clearOptions();
+                        var optionArray = [];
+                        $("#selectizeInput").removeClass("selectizeInputRed");
+                        for (ticket in msg) {
+                            optionArray.push({
+                                class: "recentIssues",
+                                img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
+                                title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
+                            });
+                        }
+                        if (isTyping == typingNum) {
+                            selectize.addOption(optionArray);
+                            selectize.refreshOptions(true);
+                        }
+                    },
+                    error: function(e1, e2, e3) {
+                        console.log("Search error: ");
+                        console.log(e1);
+                    }
+                });
+            },
+            error: function(e1, e2, e3) {
+                console.log("Auth error: ");
+                console.log(e1);
+            }
+        });
+    });
+
     $("#issue-selectized").on('keyup', function(key) {
+        isTyping++;
+        var typingNum = isTyping;
         if (key.originalEvent.keyCode) {
             var pressKeyCode = key.originalEvent.keyCode;
         } else {
             var pressKeyCode = false;
         }
-        if (pressKeyCode == 16 || pressKeyCode == 9 || pressKeyCode == 27 || pressKeyCode == 20 || pressKeyCode == 13) {
-            if (pressKeyCode == 9 || pressKeyCode == 27 || pressKeyCode == 13) {
-                selectize.disable();
-                setTimeout(function() {
-                    selectize.enable();
-                    $("#timeSpent").focus();
-                }, 1000);
-            }
+        if (pressKeyCode == 9 || pressKeyCode == 27 || pressKeyCode == 13) {
+            isTyping = 0;
+            return;
+        }
+        if (pressKeyCode == 27 || pressKeyCode == 40 || pressKeyCode == 38 || pressKeyCode == 37 || pressKeyCode == 39) {
             return;
         }
         $.ajax({
@@ -64,13 +119,32 @@ $(function() {
                     url: "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/search-issues-picker?q=" + $("#issue-selectized").val(),
                     success: function(msg) {
                         selectize.clearOptions();
-                        for (ticket in msg) {
-                            selectize.addOption({
-                                img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
-                                title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
-                            });
+                        var optionArray = [];
+                        if (msg.length == 0) {
+                            $("#selectizeInput").addClass("selectizeInputRed");
+                        } else if ($("#issue-selectized").val() == "") {
+                            $("#selectizeInput").removeClass("selectizeInputRed");
+                            for (ticket in msg) {
+                                optionArray.push({
+                                    class: "recentIssues",
+                                    img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
+                                    title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
+                                });
+                            }
+                        } else {
+                            $("#selectizeInput").removeClass("selectizeInputRed");
+                            for (ticket in msg) {
+                                optionArray.push({
+                                    class: "otherIssues",
+                                    img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
+                                    title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
+                                });
+                            }
                         }
-                        selectize.refreshOptions(true);
+                        if (isTyping == typingNum) {
+                            selectize.addOption(optionArray);
+                            selectize.refreshOptions(true);
+                        }
                     },
                     error: function(e1, e2, e3) {
                         console.log("Search error: ");
@@ -129,9 +203,13 @@ $(function() {
 
     selectize.on('change', function() {
         setTimeout(function() {
-            chrome.storage.sync.set({ 'issue': selectize.getValue() }, function() {});
-            chrome.storage.sync.set({ 'img': selectize.getItem(selectize.getValue())[0]['children'][0]['currentSrc'] }, function() {});
-            updateIssueWorkTime(selectize.getValue());
+            try {
+                chrome.storage.sync.set({ 'issue': selectize.getValue() }, function() {});
+                chrome.storage.sync.set({ 'img': selectize.getItem(selectize.getValue())[0]['children'][0]['currentSrc'] }, function() {});
+                updateIssueWorkTime(selectize.getValue());
+            } catch (e) {
+                console.log("Set issue title and image error: " + e);
+            }
         }, 500);
     });
 
@@ -308,10 +386,6 @@ $(function() {
         });
     });
 
-    $("#versionText").on('click', function() {
-        chrome.tabs.create({ url: "https://github.com/dang113108/JIRA-Tracker" });
-    });
-
 });
 
 function getTimestamp() {
@@ -409,22 +483,4 @@ function getIssueNumber(issue) {
     issue = issue.split(" - ");
     issue = issue[0];
     return issue;
-}
-
-function checkVersion(appVer) {
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: "https://api.github.com/repos/dang113108/JIRA-Tracker/branches/master",
-        success: function(msg) {
-            masterVer = msg['commit']['commit']['message'];
-            if (appVer != masterVer) {
-                $("#versionText").text("NEW VERSION");
-                $("#versionText").addClass("text-light bg-danger");
-            }
-        },
-        error: function(e1, e2, e3) {
-            //
-        }
-    });
 }
