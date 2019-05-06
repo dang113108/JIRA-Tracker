@@ -388,7 +388,7 @@ $(function() {
     });
 
     $("#versionText").on('click', function() {
-        chrome.tabs.create({ url: "https://github.com/dang113108/JIRA-Tracker" });
+        chrome.tabs.create({ url: "https://github.com/dang113108/JIRA-Tracker/tree/master" });
     });
 
 });
