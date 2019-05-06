@@ -17,7 +17,7 @@
     ],
     "background":
     {
-        "scripts": ["js/popup.js", "js/account.js", "js/collapse.js"],
+        "scripts": ["js/popup.js", "js/account.js", "js/collapse.js", "js/version.js"],
         "persistent": true
     }
 }

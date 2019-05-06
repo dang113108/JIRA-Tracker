@@ -2,7 +2,6 @@ var countSec = 0;
 var isRecord = false;
 var isPause = false;
 var isStop = false;
-var version = "v0.1.3h";
 var saveData = ['img', 'startTime', 'countSec', 'issue', 'timeSpent', 'comment', 'isRecord', 'isPause', 'isStop', 'account', 'password'];
 var removeData = ['startTime', 'countSec', 'isRecord', 'isPause', 'isStop'];
 var removeUIData = ['img', 'issue', 'timeSpent', 'comment'];
@@ -11,7 +10,6 @@ $(function() {
     // chrome.storage.sync.clear(function() {});
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover();
-    checkVersion(version);
 
     var select = $("#issue").selectize({
         valueField: 'title',
@@ -387,10 +385,6 @@ $(function() {
         });
     });
 
-    $("#versionText").on('click', function() {
-        chrome.tabs.create({ url: "https://github.com/dang113108/JIRA-Tracker/tree/master" });
-    });
-
 });
 
 function getTimestamp() {
@@ -488,22 +482,4 @@ function getIssueNumber(issue) {
     issue = issue.split(" - ");
     issue = issue[0];
     return issue;
-}
-
-function checkVersion(appVer) {
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: "https://api.github.com/repos/dang113108/JIRA-Tracker/branches/master",
-        success: function(msg) {
-            masterVer = msg['commit']['commit']['message'];
-            if (appVer != masterVer) {
-                $("#versionText").text("NEW VERSION");
-                $("#versionText").addClass("text-light bg-danger");
-            }
-        },
-        error: function(e1, e2, e3) {
-            //
-        }
-    });
 }

@@ -13,6 +13,7 @@ body::-webkit-scrollbar {
 
 html {
     overflow: -moz-hidden-unscrollable;
+    font-family: Microsoft JhengHei;
 }
 
 .collapseButton {
@@ -84,6 +85,19 @@ html {
     background: #fff;
     border-bottom: 1px solid #ccc;
     padding: 10px 20px;
+}
+
+.modal {
+    margin: 0;
+    padding: 0;
+    width: 20em;
+    -ms-overflow-style: none;
+    overflow: auto;
+    margin：0px !important;
+}
+
+.modal::-webkit-scrollbar {
+    display: none;
 }
 
 .sameline {
