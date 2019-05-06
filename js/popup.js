@@ -19,17 +19,74 @@ $(function() {
         searchField: 'title',
         create: false,
         selectOnTab: true,
+        optgroupField: 'class',
+        optgroups: [
+            { value: 'recentIssues', label: 'Recent Issues' }
+        ],
         render: {
             item: function(item, escape) {
                 return "<div><img class='ticketIcon' src='" + escape(item.img) + "'></img> <issue class='ticketText'>" + escape(item.title) + "</issue></div>";
             },
             option: function(item, escape) {
                 return "<div><img class='ticketIcon' src='" + escape(item.img) + "'></img> <issue class='ticketText'>" + escape(item.title) + "</issue></div>";
+            },
+            optgroup_header: function(item, escape) {
+                return '<div class="optgroup-header">' + escape(item.label) + '</div>';
             }
         }
     });
     var selectize = select[0].selectize;
     $("#issue").attr('max-height', '43px');
+
+    $("#issue-selectized").on('focus', function() {
+        if ($("#issue-selectized").val() != "") {
+            return;
+        }
+        isTyping++;
+        var typingNum = isTyping;
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "https://jira.exosite.com/rest/auth/1/session",
+            contentType: 'application/json',
+            data: '{"username": "' + account + '","password": "' + password + '"}',
+            success: function(msg) {
+                $.ajax({
+                    type: "GET",
+                    beforeSend: function(request) {
+                        request.setRequestHeader("Access-Control-Allow-Origin", "https://jira.exosite.com");
+                        request.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                        request.setRequestHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Authorization");
+                    },
+                    url: "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/search-issues-picker?q=",
+                    success: function(msg) {
+                        selectize.clearOptions();
+                        var optionArray = [];
+                        $("#selectizeInput").removeClass("selectizeInputRed");
+                        for (ticket in msg) {
+                            optionArray.push({
+                                class: "recentIssues",
+                                img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
+                                title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
+                            });
+                        }
+                        if (isTyping == typingNum) {
+                            selectize.addOption(optionArray);
+                            selectize.refreshOptions(true);
+                        }
+                    },
+                    error: function(e1, e2, e3) {
+                        console.log("Search error: ");
+                        console.log(e1);
+                    }
+                });
+            },
+            error: function(e1, e2, e3) {
+                console.log("Auth error: ");
+                console.log(e1);
+            }
+        });
+    });
 
     $("#issue-selectized").on('keyup', function(key) {
         isTyping++;
@@ -64,11 +121,26 @@ $(function() {
                     success: function(msg) {
                         selectize.clearOptions();
                         var optionArray = [];
-                        for (ticket in msg) {
-                            optionArray.push({
-                                img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
-                                title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
-                            });
+                        if (msg.length == 0) {
+                            $("#selectizeInput").addClass("selectizeInputRed");
+                        } else if ($("#issue-selectized").val() == "") {
+                            $("#selectizeInput").removeClass("selectizeInputRed");
+                            for (ticket in msg) {
+                                optionArray.push({
+                                    class: "recentIssues",
+                                    img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
+                                    title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
+                                });
+                            }
+                        } else {
+                            $("#selectizeInput").removeClass("selectizeInputRed");
+                            for (ticket in msg) {
+                                optionArray.push({
+                                    class: "otherIssues",
+                                    img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
+                                    title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
+                                });
+                            }
                         }
                         if (isTyping == typingNum) {
                             selectize.addOption(optionArray);
@@ -132,9 +204,13 @@ $(function() {
 
     selectize.on('change', function() {
         setTimeout(function() {
-            chrome.storage.sync.set({ 'issue': selectize.getValue() }, function() {});
-            chrome.storage.sync.set({ 'img': selectize.getItem(selectize.getValue())[0]['children'][0]['currentSrc'] }, function() {});
-            updateIssueWorkTime(selectize.getValue());
+            try {
+                chrome.storage.sync.set({ 'issue': selectize.getValue() }, function() {});
+                chrome.storage.sync.set({ 'img': selectize.getItem(selectize.getValue())[0]['children'][0]['currentSrc'] }, function() {});
+                updateIssueWorkTime(selectize.getValue());
+            } catch (e) {
+                console.log("Set issue title and image error: " + e);
+            }
         }, 500);
     });
 
