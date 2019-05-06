@@ -2,6 +2,7 @@ var countSec = 0;
 var isRecord = false;
 var isPause = false;
 var isStop = false;
+var isTyping = 0;
 var saveData = ['img', 'startTime', 'countSec', 'issue', 'timeSpent', 'comment', 'isRecord', 'isPause', 'isStop', 'account', 'password'];
 var removeData = ['startTime', 'countSec', 'isRecord', 'isPause', 'isStop'];
 var removeUIData = ['img', 'issue', 'timeSpent', 'comment'];
