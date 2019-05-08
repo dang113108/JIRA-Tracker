@@ -1,4 +1,4 @@
-var version = "v0.2.0";
+var version = "v0.2.0hf1";
 var lastViewRelease = "";
 
 $(function() {

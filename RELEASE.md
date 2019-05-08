@@ -1,4 +1,12 @@
 # Release Note For JIRA-Tracker
+## v0.2.0hf1 (2019/05/08)
+
+#### Bug Fix:
+
+- Fix the multi-line comment can not submit to the JIRA.
+	* 修正輸入多行的Comment時，無法Submit的錯誤。
+
+------------
 ## v0.2.0 (2019/05/07)
 
 #### Bug Fix:
