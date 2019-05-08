@@ -1,4 +1,4 @@
-var version = "v0.2.0hf1";
+var version = "v0.2.0hf2";
 var lastViewRelease = "";
 
 $(function() {
@@ -37,7 +37,7 @@ function checkVersion(appVer) {
                     chrome.storage.sync.get("nowVersion", function(item) {
                         if (masterVer != item["nowVersion"]) {
                             $("#versionModalTitle").text("New Version Update!")
-                            $("#modal-body").load("../RELEASE.html");
+                            $("#modal-body").load("https://dang113108.github.io/JIRA-Tracker/RELEASE.html");
                             $("#versionModal").modal('show');
                             chrome.storage.sync.set({ 'nowVersion': masterVer }, function() {});
                         }
