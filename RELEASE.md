@@ -1,4 +1,12 @@
 # Release Note For JIRA-Tracker
+## v0.2.0hf2 (2019/05/09)
+
+#### Bug Fix:
+
+- Fix the Release Note will show old version when the Tracker have new version to update.
+	* 修正尚未更新到新版本時，會顯示舊的Release Note的問題。
+
+------------
 ## v0.2.0hf1 (2019/05/08)
 
 #### Bug Fix:
