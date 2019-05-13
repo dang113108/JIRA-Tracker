@@ -2,6 +2,11 @@
 ------------
 ## v0.2.1 (2019/05/13)
 
+#### Bug Fix:
+
+- Fix to using wrong branch release note URL.
+	* 修正使用到錯誤Branch的Release Note連結。
+
 #### New Feature:
 
 - You can check the full name of the ticket when stoping your cursor on issue selection.

@@ -37,7 +37,7 @@ function checkVersion(appVer) {
                     chrome.storage.sync.get("nowVersion", function(item) {
                         if (masterVer != item["nowVersion"]) {
                             $("#versionModalTitle").text("New Version Update!")
-                            $("#modal-body").load("https://dang113108.github.io/JIRA-Tracker/RELEASE.html");
+                            $("#modal-body").load("https://github.com/dang113108/JIRA-Tracker/blob/master/RELEASE.html");
                             $("#versionModal").modal('show');
                             chrome.storage.sync.set({ 'nowVersion': masterVer }, function() {});
                         }
