@@ -1,4 +1,13 @@
 # Release Note For JIRA-Tracker
+------------
+## v0.2.1 (2019/05/13)
+
+#### New Feature:
+
+- You can check the full name of the ticket when stoping your cursor on issue selection.
+	* 現在將游標停止在Issue上時，會顯示Ticket全名。
+
+------------
 ## v0.2.0hf2 (2019/05/09)
 
 #### Bug Fix:

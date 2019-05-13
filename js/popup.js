@@ -39,6 +39,7 @@ $(function() {
 
     $("#issue-selectized").on('focus', function() {
         if ($("#issue-selectized").val() != "") {
+            $("#selectizeInput").attr('title', $("#issue-selectized").val());
             return;
         }
         isTyping++;
@@ -188,6 +189,7 @@ $(function() {
                 title: issue
             });
             selectize.setValue(issue);
+            $("#selectizeInput").attr('title', issue);
         }
         if (timeSpent != '[object HTMLInputElement]' && !isRecord && !isPause) {
             $("#timeSpent").val(timeSpent);
@@ -207,7 +209,9 @@ $(function() {
                 chrome.storage.sync.set({ 'issue': selectize.getValue() }, function() {});
                 chrome.storage.sync.set({ 'img': selectize.getItem(selectize.getValue())[0]['children'][0]['currentSrc'] }, function() {});
                 updateIssueWorkTime(selectize.getValue());
+                $("#selectizeInput").attr('title', selectize.getValue());
             } catch (e) {
+                $("#selectizeInput").attr('title', '');
                 console.log("Set issue title and image error: " + e);
             }
         }, 500);
