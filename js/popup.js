@@ -279,6 +279,10 @@ $(function() {
         chrome.storage.sync.remove(['account', 'password'], function() {});
     });
 
+    $("#notPaySalary").on('click', function() {
+        $("#comment").val($("#comment").val() + " - Exosite Welfare");
+    });
+
     $("#logWork").on('submit', function(e) {
         e.preventDefault();
 
