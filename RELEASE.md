@@ -1,4 +1,5 @@
 # Release Note For JIRA-Tracker
+#### Trello: [LINK](https://trello.com/b/s2hoJ1sD)
 ------------
 ## v0.2.1 (2019/05/27)
 
@@ -17,6 +18,11 @@
 	* 現在預覽薪資將會預先扣除每個月的勞健保費用。
 - You can view the salary records older than now.
 	* 現在你可以查看更久以前的薪資記錄了。
+
+#### Improvement:
+
+- Added a link to Trello in the release notes.
+	* 在Release Note加上了Trello的連結。
 
 ------------
 ## v0.2.0hf2 (2019/05/09)
