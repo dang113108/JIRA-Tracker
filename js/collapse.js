@@ -10,6 +10,7 @@ lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
 var lastYear = lastMonthDate.getYear();
 var lastMonth = lastMonthDate.getMonth();
 var processingCount = 0;
+var LaborHealth2019 = 706;
 $(function() {
 
     $('#collapseLog').on('show.bs.collapse', function() {
@@ -133,7 +134,8 @@ function updateThisCycleHourAndSalary() {
                 sumHour += parseFloat(jsonArray[items]['timeSpent']);
             }
             mins = 60 * (sumHour - Math.floor(sumHour));
-            salary = Math.floor(sumHour * 150);
+            salary = Math.floor(sumHour * 150) - LaborHealth2019;
+            if (salary < 0) { salart = 0; }
             $("#thisYM").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
             $("#thisYMSalary").text("NTD$ " + parseFloat(salary).toLocaleString());
             $("#thisYMDate").text(lastM + "/21 - " + thisM + "/20");
@@ -179,7 +181,8 @@ function updateLastCycleHourAndSalary() {
                 sumHour += parseFloat(jsonArray[items]['timeSpent']);
             }
             mins = 60 * (sumHour - Math.floor(sumHour));
-            salary = Math.floor(sumHour * 150);
+            salary = Math.floor(sumHour * 150) - LaborHealth2019;
+            if (salary < 0) { salart = 0; }
             $("#lastYM").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
             $("#lastYMSalary").text("NTD$ " + parseFloat(salary).toLocaleString());
             $("#lastYMDate").text(llastM + "/21 - " + lastM + "/20");
