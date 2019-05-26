@@ -2,6 +2,11 @@
 ------------
 ## v0.2.1 (2019/05/27)
 
+#### Bug Fix:
+
+- Fixed the time spent on Tracker and JIRA were inconsistent.
+	* 修正Tracker與JIRA上的時間不一致的問題。
+
 #### New Feature:
 
 - You can check the full name of the ticket when stoping your cursor on issue selection.

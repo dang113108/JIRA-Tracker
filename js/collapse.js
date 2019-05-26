@@ -139,14 +139,18 @@ function updateCycleHourAndSalary(monthBeforeNow = 0) {
         url: url,
         contentType: 'application/json',
         success: function(jsonArray) {
-            var sumHour = 0.0;
+            var sumHour = 0;
+            var mins = 0;
             for (items in jsonArray) {
-                sumHour += parseFloat(jsonArray[items]['timeSpent']);
+                timeSpent = jsonArray[items]['timeSpent'];
+                sumHour += Math.floor(timeSpent);
+                mins += Math.round((timeSpent - Math.floor(timeSpent)) * 60);
             }
-            mins = 60 * (sumHour - Math.floor(sumHour));
+            sumHour += Math.floor(mins / 60);
+            mins -= Math.floor(mins / 60) * 60;
             salary = Math.floor(sumHour * salaryMonth) - LaborHealth;
             if (salary < 0) { salary = 0; }
-            $("#YM" + monthBeforeNow).text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
+            $("#YM" + monthBeforeNow).text(sumHour + " hour " + mins + " mins");
             $("#YM" + monthBeforeNow + "Salary").text("NTD$ " + parseFloat(salary).toLocaleString());
             $("#YM" + monthBeforeNow + "Date").text(lastM + "/21 - " + thisM + "/20");
             $("#YM" + monthBeforeNow + "SDate").text(lastM + "/21 - " + thisM + "/20");
@@ -172,12 +176,16 @@ function updateTodayWorkHour() {
         url: url,
         contentType: 'application/json',
         success: function(jsonArray) {
-            var sumHour = 0.0;
+            var sumHour = 0;
+            var mins = 0;
             for (items in jsonArray) {
-                sumHour += parseFloat(jsonArray[items]['timeSpent']);
+                timeSpent = jsonArray[items]['timeSpent'];
+                sumHour += Math.floor(timeSpent);
+                mins += Math.round((timeSpent - Math.floor(timeSpent)) * 60);
             }
-            mins = 60 * (sumHour - Math.floor(sumHour));
-            $("#toDay").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
+            sumHour += Math.floor(mins / 60);
+            mins -= Math.floor(mins / 60) * 60;
+            $("#toDay").text(sumHour + " hour " + mins + " mins");
             $("#loadTodayHour").hide();
             $("#toDay").css("visibility", "visible");
             countSuccess();
@@ -200,12 +208,16 @@ function updateMonthHour() {
         url: url,
         contentType: 'application/json',
         success: function(jsonArray) {
-            var sumHour = 0.0;
+            var sumHour = 0;
+            var mins = 0;
             for (items in jsonArray) {
-                sumHour += parseFloat(jsonArray[items]['timeSpent']);
+                timeSpent = jsonArray[items]['timeSpent'];
+                sumHour += Math.floor(timeSpent);
+                mins += Math.round((timeSpent - Math.floor(timeSpent)) * 60);
             }
-            mins = 60 * (sumHour - Math.floor(sumHour));
-            $("#thisMonth").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
+            sumHour += Math.floor(mins / 60);
+            mins -= Math.floor(mins / 60) * 60;
+            $("#thisMonth").text(sumHour + " hour " + mins + " mins");
             countSuccess();
         },
         error: function(e1, e2, e3) {
@@ -226,12 +238,16 @@ function updateWeekHour() {
         url: url,
         contentType: 'application/json',
         success: function(jsonArray) {
-            var sumHour = 0.0;
+            var sumHour = 0;
+            var mins = 0;
             for (items in jsonArray) {
-                sumHour += parseFloat(jsonArray[items]['timeSpent']);
+                timeSpent = jsonArray[items]['timeSpent'];
+                sumHour += Math.floor(timeSpent);
+                mins += Math.round((timeSpent - Math.floor(timeSpent)) * 60);
             }
-            mins = 60 * (sumHour - Math.floor(sumHour));
-            $("#thisWeek").text(Math.floor(sumHour) + " hour " + Math.floor(mins) + " mins");
+            sumHour += Math.floor(mins / 60);
+            mins -= Math.floor(mins / 60) * 60;
+            $("#thisWeek").text(sumHour + " hour " + mins + " mins");
             countSuccess();
         },
         error: function(e1, e2, e3) {
