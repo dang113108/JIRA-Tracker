@@ -11,6 +11,8 @@
 
 - You can check the full name of the ticket when stoping your cursor on issue selection.
 	* 現在將游標停止在Issue上時，會顯示Ticket全名。
+- It is now possible to exclude unpaid work from the preview salary (such as English lessons, etc.) by clicking the button.
+	* 現在可以透過點擊按鈕將不支薪的工作排除在預覽薪資中（如英文課等）。
 - Preview salary now will be deducted for each month's labor and health insurance costs.
 	* 現在預覽薪資將會預先扣除每個月的勞健保費用。
 - You can view the salary records older than now.

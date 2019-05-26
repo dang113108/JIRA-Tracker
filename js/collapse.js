@@ -139,18 +139,10 @@ function updateCycleHourAndSalary(monthBeforeNow = 0) {
         url: url,
         contentType: 'application/json',
         success: function(jsonArray) {
-            var sumHour = 0;
-            var mins = 0;
-            for (items in jsonArray) {
-                timeSpent = jsonArray[items]['timeSpent'];
-                sumHour += Math.floor(timeSpent);
-                mins += Math.round((timeSpent - Math.floor(timeSpent)) * 60);
-            }
-            sumHour += Math.floor(mins / 60);
-            mins -= Math.floor(mins / 60) * 60;
-            salary = Math.floor(sumHour * salaryMonth) - LaborHealth;
+            var workTime = getWorkTime(jsonArray, true);
+            salary = (workTime.judgeSumHour * salaryMonth) + Math.round(workTime.judgeMins * (salaryMonth / 60)) - LaborHealth;
             if (salary < 0) { salary = 0; }
-            $("#YM" + monthBeforeNow).text(sumHour + " hour " + mins + " mins");
+            $("#YM" + monthBeforeNow).text(workTime.sumHour + " hour " + workTime.mins + " mins");
             $("#YM" + monthBeforeNow + "Salary").text("NTD$ " + parseFloat(salary).toLocaleString());
             $("#YM" + monthBeforeNow + "Date").text(lastM + "/21 - " + thisM + "/20");
             $("#YM" + monthBeforeNow + "SDate").text(lastM + "/21 - " + thisM + "/20");
@@ -176,16 +168,8 @@ function updateTodayWorkHour() {
         url: url,
         contentType: 'application/json',
         success: function(jsonArray) {
-            var sumHour = 0;
-            var mins = 0;
-            for (items in jsonArray) {
-                timeSpent = jsonArray[items]['timeSpent'];
-                sumHour += Math.floor(timeSpent);
-                mins += Math.round((timeSpent - Math.floor(timeSpent)) * 60);
-            }
-            sumHour += Math.floor(mins / 60);
-            mins -= Math.floor(mins / 60) * 60;
-            $("#toDay").text(sumHour + " hour " + mins + " mins");
+            var workTime = getWorkTime(jsonArray);
+            $("#toDay").text(workTime.sumHour + " hour " + workTime.mins + " mins");
             $("#loadTodayHour").hide();
             $("#toDay").css("visibility", "visible");
             countSuccess();
@@ -208,16 +192,8 @@ function updateMonthHour() {
         url: url,
         contentType: 'application/json',
         success: function(jsonArray) {
-            var sumHour = 0;
-            var mins = 0;
-            for (items in jsonArray) {
-                timeSpent = jsonArray[items]['timeSpent'];
-                sumHour += Math.floor(timeSpent);
-                mins += Math.round((timeSpent - Math.floor(timeSpent)) * 60);
-            }
-            sumHour += Math.floor(mins / 60);
-            mins -= Math.floor(mins / 60) * 60;
-            $("#thisMonth").text(sumHour + " hour " + mins + " mins");
+            var workTime = getWorkTime(jsonArray);
+            $("#thisMonth").text(workTime.sumHour + " hour " + workTime.mins + " mins");
             countSuccess();
         },
         error: function(e1, e2, e3) {
@@ -238,16 +214,8 @@ function updateWeekHour() {
         url: url,
         contentType: 'application/json',
         success: function(jsonArray) {
-            var sumHour = 0;
-            var mins = 0;
-            for (items in jsonArray) {
-                timeSpent = jsonArray[items]['timeSpent'];
-                sumHour += Math.floor(timeSpent);
-                mins += Math.round((timeSpent - Math.floor(timeSpent)) * 60);
-            }
-            sumHour += Math.floor(mins / 60);
-            mins -= Math.floor(mins / 60) * 60;
-            $("#thisWeek").text(sumHour + " hour " + mins + " mins");
+            var workTime = getWorkTime(jsonArray);
+            $("#thisWeek").text(workTime.sumHour + " hour " + workTime.mins + " mins");
             countSuccess();
         },
         error: function(e1, e2, e3) {
@@ -293,5 +261,32 @@ function getDate(monthBeforeNow = 0) {
         calcMonth: calcMonth,
         calcDay: calcDay,
         calcDayOfWeek: calcDayOfWeek
+    }
+}
+
+function getWorkTime(jsonArray, judge = false) {
+    var sumHour = 0;
+    var mins = 0;
+    var judgeSumHour = 0;
+    var judgeMins = 0;
+    for (items in jsonArray) {
+        timeSpent = jsonArray[items]['timeSpent'];
+        workComment = jsonArray[items]['comment'];
+        if (judge == true && workComment.toLowerCase().indexOf("exosite welfare") == -1) {
+            judgeSumHour += Math.floor(timeSpent);
+            judgeMins += Math.round((timeSpent - Math.floor(timeSpent)) * 60);
+        }
+        sumHour += Math.floor(timeSpent);
+        mins += Math.round((timeSpent - Math.floor(timeSpent)) * 60);
+    }
+    sumHour += Math.floor(mins / 60);
+    mins -= Math.floor(mins / 60) * 60;
+    judgeSumHour += Math.floor(judgeMins / 60);
+    judgeMins -= Math.floor(judgeMins / 60) * 60;
+    return {
+        sumHour: sumHour,
+        mins: mins,
+        judgeSumHour: judgeSumHour,
+        judgeMins: judgeMins
     }
 }
