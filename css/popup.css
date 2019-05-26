@@ -43,6 +43,45 @@ html {
     padding: 0;
 }
 
+.downArrow {
+    visibility: hidden;
+    position: fixed;
+    bottom: 5px;
+    left: 160px;
+    z-index: 999;
+    color: #0052CC;
+    animation: keepMoving 2s linear 0s infinite alternate;
+    -webkit-animation: keepMoving 2s linear 0s infinite alternate;
+}
+
+@keyframes keepMoving {
+    0% {
+        margin-bottom: 0px;
+    }
+
+    50% {
+        margin-bottom: 5px;
+    }
+
+    100% {
+        margin-bottom: 0px;
+    }
+}
+
+@-webkit-keyframes keepMoving {
+    0% {
+        margin-bottom: 0px;
+    }
+
+    50% {
+        margin-bottom: 5px;
+    }
+
+    100% {
+        margin-bottom: 0px;
+    }
+}
+
 .errorSave {
     display: none;
 }
