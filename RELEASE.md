@@ -1,11 +1,13 @@
 # Release Note For JIRA-Tracker
 ------------
-## v0.2.1 (2019/05/13)
+## v0.2.1 (2019/05/26)
 
 #### New Feature:
 
 - You can check the full name of the ticket when stoping your cursor on issue selection.
 	* 現在將游標停止在Issue上時，會顯示Ticket全名。
+- Preview salary now will be deducted for each month's labor and health insurance costs.
+	* 現在預覽薪資將會預先扣除每個月的勞健保費用。
 
 ------------
 ## v0.2.0hf2 (2019/05/09)
