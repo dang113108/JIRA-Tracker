@@ -1,5 +1,5 @@
 # Release Note For JIRA-Tracker
-#### Trello: [LINK](https://trello.com/b/s2hoJ1sD)
+#### Trello: [https://trello.com/b/s2hoJ1sD](https://trello.com/b/s2hoJ1sD)
 ------------
 ## v0.2.1 (2019/06/05)
 
@@ -7,6 +7,8 @@
 
 - Fixed the time spent on Tracker and JIRA were inconsistent.
 	* 修正Tracker與JIRA上的時間不一致的問題。
+- Fixed issue with Trello link on Release Note.
+	* 修正Release Note上Trello連結的問題。
 
 #### New Feature:
 
