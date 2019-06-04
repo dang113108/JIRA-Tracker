@@ -1,7 +1,7 @@
 # Release Note For JIRA-Tracker
 #### Trello: [LINK](https://trello.com/b/s2hoJ1sD)
 ------------
-## v0.2.1 (2019/06/04)
+## v0.2.1 (2019/06/05)
 
 #### Bug Fix:
 
@@ -25,6 +25,8 @@
 	* 在Release Note加上了Trello的連結。
 - Improve and reduce the number of repeated logins to JIRA.
 	* 改善並減少一直重複登入JIRA的次數。
+- Improve the elimination of unpaid work and the UI.
+	* 改善不支薪工作的排除方式及UI。
 
 ------------
 ## v0.2.0hf2 (2019/05/09)

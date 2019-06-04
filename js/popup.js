@@ -255,10 +255,6 @@ $(function() {
         chrome.storage.sync.remove(['account', 'password'], function() {});
     });
 
-    $("#notPaySalary").on('click', function() {
-        $("#comment").val($("#comment").val() + " - Exosite Welfare");
-    });
-
     $("#logWork").on('submit', function(e) {
         e.preventDefault();
 
@@ -282,7 +278,11 @@ $(function() {
 
         issue = getIssueNumber(selectize.getValue());
         timeSpent = $("#timeSpent").val();
-        comment = $("#comment").val();
+        if ($("#checkNoPay").is(":checked")) {
+            comment = $("#comment").val() + " - Exosite Welfare";
+        } else {
+            comment = $("#comment").val();
+        }
 
         if (timeSpent.indexOf("h") != -1) {
             if (timeSpent.indexOf("m") != -1) {
@@ -334,6 +334,7 @@ $(function() {
                 selectize.clearOptions();
                 $("#timeSpent").val("");
                 $("#timeSpent").change();
+                $("#checkNoPay").prop('checked', false);
                 $("#comment").val("");
                 $("#hour").text("0");
                 $("#minute").text("0");

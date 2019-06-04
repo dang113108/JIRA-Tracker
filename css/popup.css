@@ -43,6 +43,10 @@ html {
     padding: 0;
 }
 
+.checkNoPay {
+    margin-left: 10px;
+}
+
 .downArrow {
     visibility: hidden;
     position: fixed;
