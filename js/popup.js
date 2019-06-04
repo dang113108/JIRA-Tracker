@@ -45,44 +45,32 @@ $(function() {
         isTyping++;
         var typingNum = isTyping;
         $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "https://jira.exosite.com/rest/auth/1/session",
-            contentType: 'application/json',
-            data: '{"username": "' + account + '","password": "' + password + '"}',
+            type: "GET",
+            beforeSend: function(request) {
+                request.setRequestHeader("Access-Control-Allow-Origin", "https://jira.exosite.com");
+                request.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                request.setRequestHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Authorization");
+                request.setRequestHeader("Authorization", userToken);
+            },
+            url: "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/search-issues-picker?q=",
             success: function(msg) {
-                $.ajax({
-                    type: "GET",
-                    beforeSend: function(request) {
-                        request.setRequestHeader("Access-Control-Allow-Origin", "https://jira.exosite.com");
-                        request.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-                        request.setRequestHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Authorization");
-                    },
-                    url: "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/search-issues-picker?q=",
-                    success: function(msg) {
-                        selectize.clearOptions();
-                        var optionArray = [];
-                        $("#selectizeInput").removeClass("selectizeInputRed");
-                        for (ticket in msg) {
-                            optionArray.push({
-                                class: "recentIssues",
-                                img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
-                                title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
-                            });
-                        }
-                        if (isTyping == typingNum) {
-                            selectize.addOption(optionArray);
-                            selectize.refreshOptions(true);
-                        }
-                    },
-                    error: function(e1, e2, e3) {
-                        console.log("Search error: ");
-                        console.log(e1);
-                    }
-                });
+                selectize.clearOptions();
+                var optionArray = [];
+                $("#selectizeInput").removeClass("selectizeInputRed");
+                for (ticket in msg) {
+                    optionArray.push({
+                        class: "recentIssues",
+                        img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
+                        title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
+                    });
+                }
+                if (isTyping == typingNum) {
+                    selectize.addOption(optionArray);
+                    selectize.refreshOptions(true);
+                }
             },
             error: function(e1, e2, e3) {
-                console.log("Auth error: ");
+                console.log("Search error: ");
                 console.log(e1);
             }
         });
@@ -104,57 +92,45 @@ $(function() {
             return;
         }
         $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "https://jira.exosite.com/rest/auth/1/session",
-            contentType: 'application/json',
-            data: '{"username": "' + account + '","password": "' + password + '"}',
+            type: "GET",
+            beforeSend: function(request) {
+                request.setRequestHeader("Access-Control-Allow-Origin", "https://jira.exosite.com");
+                request.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                request.setRequestHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Authorization");
+                request.setRequestHeader("Authorization", userToken);
+            },
+            url: "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/search-issues-picker?q=" + $("#issue-selectized").val(),
             success: function(msg) {
-                $.ajax({
-                    type: "GET",
-                    beforeSend: function(request) {
-                        request.setRequestHeader("Access-Control-Allow-Origin", "https://jira.exosite.com");
-                        request.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-                        request.setRequestHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Authorization");
-                    },
-                    url: "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/search-issues-picker?q=" + $("#issue-selectized").val(),
-                    success: function(msg) {
-                        selectize.clearOptions();
-                        var optionArray = [];
-                        if (msg.length == 0) {
-                            $("#selectizeInput").addClass("selectizeInputRed");
-                        } else if ($("#issue-selectized").val() == "") {
-                            $("#selectizeInput").removeClass("selectizeInputRed");
-                            for (ticket in msg) {
-                                optionArray.push({
-                                    class: "recentIssues",
-                                    img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
-                                    title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
-                                });
-                            }
-                        } else {
-                            $("#selectizeInput").removeClass("selectizeInputRed");
-                            for (ticket in msg) {
-                                optionArray.push({
-                                    class: "otherIssues",
-                                    img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
-                                    title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
-                                });
-                            }
-                        }
-                        if (isTyping == typingNum) {
-                            selectize.addOption(optionArray);
-                            selectize.refreshOptions(true);
-                        }
-                    },
-                    error: function(e1, e2, e3) {
-                        console.log("Search error: ");
-                        console.log(e1);
+                selectize.clearOptions();
+                var optionArray = [];
+                if (msg.length == 0) {
+                    $("#selectizeInput").addClass("selectizeInputRed");
+                } else if ($("#issue-selectized").val() == "") {
+                    $("#selectizeInput").removeClass("selectizeInputRed");
+                    for (ticket in msg) {
+                        optionArray.push({
+                            class: "recentIssues",
+                            img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
+                            title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
+                        });
                     }
-                });
+                } else {
+                    $("#selectizeInput").removeClass("selectizeInputRed");
+                    for (ticket in msg) {
+                        optionArray.push({
+                            class: "otherIssues",
+                            img: "https://jira.exosite.com" + msg[ticket]['issueTypeIconUrl'],
+                            title: msg[ticket]['issueKey'] + " - " + msg[ticket]['issueSummary']
+                        });
+                    }
+                }
+                if (isTyping == typingNum) {
+                    selectize.addOption(optionArray);
+                    selectize.refreshOptions(true);
+                }
             },
             error: function(e1, e2, e3) {
-                console.log("Auth error: ");
+                console.log("Search error: ");
                 console.log(e1);
             }
         });
@@ -327,60 +303,42 @@ $(function() {
 
         $.ajax({
             type: "POST",
+            beforeSend: function(request) {
+                request.setRequestHeader("Access-Control-Allow-Origin", "https://jira.exosite.com");
+                request.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                request.setRequestHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Authorization");
+                request.setRequestHeader("Authorization", userToken);
+            },
             dataType: "json",
-            url: "https://jira.exosite.com/rest/auth/1/session",
-            contentType: 'application/json',
-            data: '{"username": "' + account + '","password": "' + password + '"}',
+            url: "https://jira.exosite.com/rest/api/2/issue/" + issue + "/worklog/",
+            contentType: 'application/json; charset=UTF-8',
+            data: workData,
             success: function(msg) {
-                $.ajax({
-                    type: "POST",
-                    beforeSend: function(request) {
-                        request.setRequestHeader("Access-Control-Allow-Origin", "https://jira.exosite.com");
-                        request.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-                        request.setRequestHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Authorization");
-                    },
-                    dataType: "json",
-                    url: "https://jira.exosite.com/rest/api/2/issue/" + issue + "/worklog/",
-                    contentType: 'application/json; charset=UTF-8',
-                    data: workData,
-                    success: function(msg) {
-                        $("#loadingSave").hide();
-                        $("#normalSave").show();
-                        $("#loadTodayHour").show();
-                        $("#toDay").css("visibility", "hidden");
-                        $("#submitWork").attr('disabled', false);
-                        $("#issueWorkTime").text("");
-                        for (var dataName in removeUIData) {
-                            chrome.storage.sync.remove(removeUIData[dataName], function(items) {});
-                        }
-                        $("#submitWork").addClass("btn-success");
-                        $("#submitWork").removeClass("btn-danger");
-                        $("#submitWork").removeClass("btn-primary");
-                        setTimeout(function() {
-                            $("#submitWork").removeClass("btn-success");
-                            $("#submitWork").addClass("btn-primary");
-                        }, 3000);
-                        selectize.setValue("");
-                        selectize.clearOptions();
-                        $("#timeSpent").val("");
-                        $("#timeSpent").change();
-                        $("#comment").val("");
-                        $("#hour").text("0");
-                        $("#minute").text("0");
-                        $("#second").text("0");
-                        updateTodayWorkHour();
-                    },
-                    error: function(e1, e2, e3) {
-                        $("#submitWork").attr('disabled', false);
-                        $("#loadingSave").hide();
-                        $("#errorSave").show();
-                        $("#submitWork").addClass("btn-danger");
-                        $("#submitWork").removeClass("btn-primary");
-                        $("#submitWork").removeClass("btn-success");
-                        console.log("Log error: ");
-                        console.log(e1);
-                    }
-                });
+                $("#loadingSave").hide();
+                $("#normalSave").show();
+                $("#loadTodayHour").show();
+                $("#toDay").css("visibility", "hidden");
+                $("#submitWork").attr('disabled', false);
+                $("#issueWorkTime").text("");
+                for (var dataName in removeUIData) {
+                    chrome.storage.sync.remove(removeUIData[dataName], function(items) {});
+                }
+                $("#submitWork").addClass("btn-success");
+                $("#submitWork").removeClass("btn-danger");
+                $("#submitWork").removeClass("btn-primary");
+                setTimeout(function() {
+                    $("#submitWork").removeClass("btn-success");
+                    $("#submitWork").addClass("btn-primary");
+                }, 3000);
+                selectize.setValue("");
+                selectize.clearOptions();
+                $("#timeSpent").val("");
+                $("#timeSpent").change();
+                $("#comment").val("");
+                $("#hour").text("0");
+                $("#minute").text("0");
+                $("#second").text("0");
+                updateTodayWorkHour();
             },
             error: function(e1, e2, e3) {
                 $("#submitWork").attr('disabled', false);
@@ -388,10 +346,12 @@ $(function() {
                 $("#errorSave").show();
                 $("#submitWork").addClass("btn-danger");
                 $("#submitWork").removeClass("btn-primary");
-                console.log("Auth error: ");
+                $("#submitWork").removeClass("btn-success");
+                console.log("Log error: ");
                 console.log(e1);
             }
         });
+
     });
 
 });
