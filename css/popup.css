@@ -143,6 +143,17 @@ html {
     display: none;
 }
 
+.releaseNote {
+    float: left;
+    margin-top: 11.5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.releaseNote:hover {
+    color: #00B8D9;
+}
+
 .sameline {
     float: left;
 }
