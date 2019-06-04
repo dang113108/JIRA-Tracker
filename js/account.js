@@ -43,7 +43,7 @@ $(function() {
                 updateTodayWorkHour();
                 chrome.storage.sync.set({ 'account': account }, function() {});
                 chrome.storage.sync.set({ 'password': password }, function() {});
-                userToken = Utilities.base64Encode(account + ":" + password);
+                userToken = btoa(account + ":" + password);
                 $('#pills-home').tab('show');
                 $('#pills-profile').removeClass('active show');
                 $("#account").val("");
