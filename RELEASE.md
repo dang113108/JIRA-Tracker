@@ -29,6 +29,8 @@
 	* 改善並減少一直重複登入JIRA的次數。
 - Improve the elimination of unpaid work and the UI.
 	* 改善不支薪工作的排除方式及UI。
+- Release Note will not take the initiative now.
+	* Release Note現在將不會主動出現。
 
 ------------
 ## v0.2.0hf2 (2019/05/09)
