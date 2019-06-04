@@ -1,4 +1,38 @@
 # Release Note For JIRA-Tracker
+#### Trello: [https://trello.com/b/s2hoJ1sD](https://trello.com/b/s2hoJ1sD)
+------------
+## v0.2.1 (2019/06/05)
+
+#### Bug Fix:
+
+- Fixed the time spent on Tracker and JIRA were inconsistent.
+	* 修正Tracker與JIRA上的時間不一致的問題。
+- Fixed issue with Trello link on Release Note.
+	* 修正Release Note上Trello連結的問題。
+
+#### New Feature:
+
+- You can check the full name of the ticket when stoping your cursor on issue selection.
+	* 現在將游標停止在Issue上時，會顯示Ticket全名。
+- It is now possible to exclude unpaid work from the preview salary (such as English lessons, etc.) by clicking the button.
+	* 現在可以透過點擊按鈕將不支薪的工作排除在預覽薪資中（如英文課等）。
+- Preview salary now will be deducted for each month's labor and health insurance costs.
+	* 現在預覽薪資將會預先扣除每個月的勞健保費用。
+- You can view the salary records older than now.
+	* 現在你可以查看更久以前的薪資記錄了。
+
+#### Improvement:
+
+- Added a link to Trello in the release notes.
+	* 在Release Note加上了Trello的連結。
+- Improve and reduce the number of repeated logins to JIRA.
+	* 改善並減少一直重複登入JIRA的次數。
+- Improve the elimination of unpaid work and the UI.
+	* 改善不支薪工作的排除方式及UI。
+- Release Note will not take the initiative now.
+	* Release Note現在將不會主動出現。
+
+------------
 ## v0.2.0hf2 (2019/05/09)
 
 #### Bug Fix:

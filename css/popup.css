@@ -43,6 +43,49 @@ html {
     padding: 0;
 }
 
+.checkNoPay {
+    margin-left: 10px;
+}
+
+.downArrow {
+    visibility: hidden;
+    position: fixed;
+    bottom: 5px;
+    left: 160px;
+    z-index: 999;
+    color: #0052CC;
+    animation: keepMoving 2s linear 0s infinite alternate;
+    -webkit-animation: keepMoving 2s linear 0s infinite alternate;
+}
+
+@keyframes keepMoving {
+    0% {
+        margin-bottom: 0px;
+    }
+
+    50% {
+        margin-bottom: 5px;
+    }
+
+    100% {
+        margin-bottom: 0px;
+    }
+}
+
+@-webkit-keyframes keepMoving {
+    0% {
+        margin-bottom: 0px;
+    }
+
+    50% {
+        margin-bottom: 5px;
+    }
+
+    100% {
+        margin-bottom: 0px;
+    }
+}
+
 .errorSave {
     display: none;
 }
@@ -98,6 +141,17 @@ html {
 
 .modal::-webkit-scrollbar {
     display: none;
+}
+
+.releaseNote {
+    float: left;
+    margin-top: 11.5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.releaseNote:hover {
+    color: #00B8D9;
 }
 
 .sameline {

@@ -1,16 +1,19 @@
-var now = new Date();
-var nowDayOfWeek = now.getDay();
-var nowDay = now.getDate();
-var nowMonth = now.getMonth();
-var nowYear = now.getYear();
-nowYear += (nowYear < 2000) ? 1900 : 0;
-var lastMonthDate = new Date();
-lastMonthDate.setDate(1);
-lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
-var lastYear = lastMonthDate.getYear();
-var lastMonth = lastMonthDate.getMonth();
 var processingCount = 0;
+var salary2018 = 140;
+var salary2019 = 150;
+var LaborHealth2018 = 673;
+var LaborHealth2019 = 706;
+
 $(function() {
+
+    $(window).scroll(function() {
+        var scrollHeight = $('html, body').scrollTop();
+        if (scrollHeight > 400 && scrollHeight < 2150) {
+            $("#downArrow").css("visibility", "visible");
+        } else {
+            $("#downArrow").css("visibility", "hidden");
+        }
+    });
 
     $('#collapseLog').on('show.bs.collapse', function() {
         $("#loadTodayHour").show();
@@ -23,12 +26,12 @@ $(function() {
             data: '{"username": "' + account + '","password": "' + password + '"}',
             success: function(msg) {
                 processingCount = 0;
-                getDate();
                 updateTodayWorkHour();
                 updateWeekHour();
                 updateMonthHour();
-                updateThisCycleHourAndSalary();
-                updateLastCycleHourAndSalary();
+                for (var num = 0; num < 14; num++) {
+                    updateCycleHourAndSalary(num);
+                }
             },
             error: function(e1, e2, e3) {
 
@@ -38,7 +41,7 @@ $(function() {
 
     $('#collapseLog').on('shown.bs.collapse', function() {
         $('html, body').animate({
-            scrollTop: 999
+            scrollTop: 430
         }, 600);
 
         $("#doubleAngle").addClass("fa-angle-double-up");
@@ -54,163 +57,119 @@ $(function() {
 
 });
 
-function getDate() {
-    now = new Date();
-    nowDayOfWeek = now.getDay();
-    nowDay = now.getDate();
-    nowMonth = now.getMonth();
-    nowYear = now.getYear();
-    nowYear += (nowYear < 2000) ? 1900 : 0;
-    lastMonthDate = new Date();
-    lastMonthDate.setDate(1);
-    lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
-    lastYear = lastMonthDate.getYear();
-    lastYear += (lastYear < 2000) ? 1900 : 0;
-    lastMonth = lastMonthDate.getMonth();
-    llastMonthDate = new Date();
-    llastMonthDate.setDate(1);
-    llastMonthDate.setMonth(llastMonthDate.getMonth() - 2);
-    llastYear = llastMonthDate.getYear();
-    llastYear += (llastYear < 2000) ? 1900 : 0;
-    llastMonth = llastMonthDate.getMonth();
-}
-
-function getWeekStartDate() {
-    var weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek);
+function getWeekStartDate(monthBeforeNow = 0) {
+    var now = getDate(monthBeforeNow);
+    var weekStartDate = new Date(now.calcYear, now.calcMonth, now.calcDay - now.calcDayOfWeek);
     return formatDate(weekStartDate);
 }
 
-function getWeekEndDate() {
-    var weekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek));
+function getWeekEndDate(monthBeforeNow = 0) {
+    var now = getDate(monthBeforeNow);
+    var weekEndDate = new Date(now.calcYear, now.calcMonth, now.calcDay + (6 - now.calcDayOfWeek));
     return formatDate(weekEndDate);
 }
 
 function getMonthDays(myMonth) {
-    var monthStartDate = new Date(nowYear, myMonth, 1);
-    var monthEndDate = new Date(nowYear, myMonth + 1, 1);
+    var now = getDate();
+    var monthStartDate = new Date(now.calcYear, myMonth, 1);
+    var monthEndDate = new Date(now.calcYear, myMonth + 1, 1);
     var days = (monthEndDate - monthStartDate) / (1000 * 60 * 60 * 24);
     return days;
 }
 
-function getMonthStartDate() {
-    var monthStartDate = new Date(nowYear, nowMonth, 1);
+function getMonthStartDate(monthBeforeNow = 0) {
+    var now = getDate(monthBeforeNow);
+    var monthStartDate = new Date(now.calcYear, now.calcMonth, 1);
     return formatDate(monthStartDate);
 }
 
-function getMonthEndDate() {
-    var monthEndDate = new Date(nowYear, nowMonth, getMonthDays(nowMonth));
+function getMonthEndDate(monthBeforeNow = 0) {
+    var now = getDate(monthBeforeNow);
+    var monthEndDate = new Date(now.calcYear, now.calcMonth, getMonthDays(now.calcMonth));
     return formatDate(monthEndDate);
 }
 
-function updateThisCycleHourAndSalary() {
-    if (nowDay >= 21) {
+function updateCycleHourAndSalary(monthBeforeNow = 0) {
+    var thisMonth = getDate(monthBeforeNow);
+    var lastMonth = getDate(monthBeforeNow + 1);
+    if (thisMonth.calcDay >= 21) {
         addNum = 2;
     } else {
         addNum = 1;
     }
-    thisM = nowMonth + addNum;
-    if (thisM < 10) {
+    var thisM = thisMonth.calcMonth + addNum;
+    var lastM = lastMonth.calcMonth + addNum;
+    var thisY = thisMonth.calcYear;
+    var lastY = lastMonth.calcYear;
+    if (thisM < 1) {
+        thisM = "12";
+        thisY -= 1;
+    } else if (thisM < 10) {
         thisM = "0" + thisM;
+    } else if (thisM > 12) {
+        thisM = "01";
+        thisY += 1;
     }
-    lastM = lastMonth + addNum;
-    if (lastM < 10) {
+
+    if (lastM < 1) {
+        lastM = "12";
+        lastY -= 1;
+    } else if (lastM < 10) {
         lastM = "0" + lastM;
+    } else if (lastM > 12) {
+        lastM = "01";
+        lastY += 1;
     }
-    thisYM = nowYear + "-" + thisM;
-    lastYM = lastYear + "-" + lastM;
+    thisYM = thisY + "-" + thisM;
+    lastYM = lastY + "-" + lastM;
     if (account == "markchang") {
         url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/mark chung/dateStart/" + lastYM + "-21/dateEnd/" + thisYM + "-20";
     } else {
         url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + lastYM + "-21/dateEnd/" + thisYM + "-20";
     }
-    $.ajax({
-        type: "GET",
-        url: url,
-        contentType: 'application/json',
-        success: function(jsonArray) {
-            var sumHour = 0.0;
-            for (items in jsonArray) {
-                sumHour += parseFloat(jsonArray[items]['timeSpent']);
-            }
-            mins = 60 * (sumHour - Math.floor(sumHour));
-            salary = Math.floor(sumHour * 150);
-            $("#thisYM").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
-            $("#thisYMSalary").text("NTD$ " + parseFloat(salary).toLocaleString());
-            $("#thisYMDate").text(lastM + "/21 - " + thisM + "/20");
-            $("#thisYMSDate").text(lastM + "/21 - " + thisM + "/20");
-            countSuccess();
-        },
-        error: function(e1, e2, e3) {
-            $("#thisYM").text("Err hour Err mins");
-            $("#thisYMSalary").text("NTD$ Err");
-            countSuccess();
-        }
-    });
-}
-
-function updateLastCycleHourAndSalary() {
-    if (nowDay >= 21) {
-        addNum = 2;
+    if (lastY == 2019) {
+        var LaborHealth = LaborHealth2019;
+        var salaryMonth = salary2019;
     } else {
-        addNum = 1;
-    }
-    lastM = lastMonth + addNum;
-    if (lastM < 10) {
-        lastM = "0" + lastM;
-    }
-    llastM = llastMonth + addNum;
-    if (llastM < 10) {
-        llastM = "0" + llastM;
-    }
-    lastYM = lastYear + "-" + lastM;
-    llastYM = llastYear + "-" + llastM;
-    if (account == "markchang") {
-        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/mark chung/dateStart/" + llastYM + "-21/dateEnd/" + lastYM + "-20";
-    } else {
-        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + llastYM + "-21/dateEnd/" + lastYM + "-20";
+        var LaborHealth = LaborHealth2018;
+        var salaryMonth = salary2018;
     }
     $.ajax({
         type: "GET",
         url: url,
         contentType: 'application/json',
         success: function(jsonArray) {
-            var sumHour = 0.0;
-            for (items in jsonArray) {
-                sumHour += parseFloat(jsonArray[items]['timeSpent']);
-            }
-            mins = 60 * (sumHour - Math.floor(sumHour));
-            salary = Math.floor(sumHour * 150);
-            $("#lastYM").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
-            $("#lastYMSalary").text("NTD$ " + parseFloat(salary).toLocaleString());
-            $("#lastYMDate").text(llastM + "/21 - " + lastM + "/20");
-            $("#lastYMSDate").text(llastM + "/21 - " + lastM + "/20");
+            var workTime = getWorkTime(jsonArray, true);
+            salary = (workTime.judgeSumHour * salaryMonth) + Math.round(workTime.judgeMins * (salaryMonth / 60)) - LaborHealth;
+            if (salary < 0) { salary = 0; }
+            $("#YM" + monthBeforeNow).text(workTime.sumHour + " hour " + workTime.mins + " mins");
+            $("#YM" + monthBeforeNow + "Salary").text("NTD$ " + parseFloat(salary).toLocaleString());
+            $("#YM" + monthBeforeNow + "Date").text(lastM + "/21 - " + thisM + "/20");
+            $("#YM" + monthBeforeNow + "SDate").text(lastM + "/21 - " + thisM + "/20");
             countSuccess();
         },
         error: function(e1, e2, e3) {
-            $("#lastYM").text("Err hour Err mins");
-            $("#lastYMSalary").text("NTD$ Err");
+            $("#YM" + monthBeforeNow).text("Err hour Err mins");
+            $("#YM" + monthBeforeNow + "Salary").text("NTD$ Err");
             countSuccess();
         }
     });
 }
 
 function updateTodayWorkHour() {
+    var now = getDate();
     if (account == "markchang") {
-        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/mark chung/dateStart/" + formatDate(now) + "/dateEnd/" + formatDate(now);
+        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/mark chung/dateStart/" + formatDate(now.now) + "/dateEnd/" + formatDate(now.now);
     } else {
-        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + formatDate(now) + "/dateEnd/" + formatDate(now);
+        url = "https://jira.exosite.com/rest/quicktimesheet-rest/1/calendar/get-user-worklog2/user/" + account + "/dateStart/" + formatDate(now.now) + "/dateEnd/" + formatDate(now.now);
     }
     $.ajax({
         type: "GET",
         url: url,
         contentType: 'application/json',
         success: function(jsonArray) {
-            var sumHour = 0.0;
-            for (items in jsonArray) {
-                sumHour += parseFloat(jsonArray[items]['timeSpent']);
-            }
-            mins = 60 * (sumHour - Math.floor(sumHour));
-            $("#toDay").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
+            var workTime = getWorkTime(jsonArray);
+            $("#toDay").text(workTime.sumHour + " hour " + workTime.mins + " mins");
             $("#loadTodayHour").hide();
             $("#toDay").css("visibility", "visible");
             countSuccess();
@@ -233,12 +192,8 @@ function updateMonthHour() {
         url: url,
         contentType: 'application/json',
         success: function(jsonArray) {
-            var sumHour = 0.0;
-            for (items in jsonArray) {
-                sumHour += parseFloat(jsonArray[items]['timeSpent']);
-            }
-            mins = 60 * (sumHour - Math.floor(sumHour));
-            $("#thisMonth").text(Math.floor(sumHour) + " hour " + Math.round(mins) + " mins");
+            var workTime = getWorkTime(jsonArray);
+            $("#thisMonth").text(workTime.sumHour + " hour " + workTime.mins + " mins");
             countSuccess();
         },
         error: function(e1, e2, e3) {
@@ -259,12 +214,8 @@ function updateWeekHour() {
         url: url,
         contentType: 'application/json',
         success: function(jsonArray) {
-            var sumHour = 0.0;
-            for (items in jsonArray) {
-                sumHour += parseFloat(jsonArray[items]['timeSpent']);
-            }
-            mins = 60 * (sumHour - Math.floor(sumHour));
-            $("#thisWeek").text(Math.floor(sumHour) + " hour " + Math.floor(mins) + " mins");
+            var workTime = getWorkTime(jsonArray);
+            $("#thisWeek").text(workTime.sumHour + " hour " + workTime.mins + " mins");
             countSuccess();
         },
         error: function(e1, e2, e3) {
@@ -293,5 +244,49 @@ function countSuccess() {
         processingCount = 0;
         $("#collapseMesh").removeClass("collapseMesh");
         $("#loadWorkDetail").hide();
+    }
+}
+
+function getDate(monthBeforeNow = 0) {
+    now = new Date();
+    now.setMonth(now.getMonth() - monthBeforeNow);
+    calcDayOfWeek = now.getDay();
+    calcDay = now.getDate();
+    calcMonth = now.getMonth();
+    calcYear = now.getYear();
+    calcYear += (calcYear < 2000) ? 1900 : 0;
+    return {
+        now: now,
+        calcYear: calcYear,
+        calcMonth: calcMonth,
+        calcDay: calcDay,
+        calcDayOfWeek: calcDayOfWeek
+    }
+}
+
+function getWorkTime(jsonArray, judge = false) {
+    var sumHour = 0;
+    var mins = 0;
+    var judgeSumHour = 0;
+    var judgeMins = 0;
+    for (items in jsonArray) {
+        timeSpent = jsonArray[items]['timeSpent'];
+        workComment = jsonArray[items]['comment'];
+        if (judge == true && workComment.toLowerCase().indexOf("exosite welfare") == -1) {
+            judgeSumHour += Math.floor(timeSpent);
+            judgeMins += Math.round((timeSpent - Math.floor(timeSpent)) * 60);
+        }
+        sumHour += Math.floor(timeSpent);
+        mins += Math.round((timeSpent - Math.floor(timeSpent)) * 60);
+    }
+    sumHour += Math.floor(mins / 60);
+    mins -= Math.floor(mins / 60) * 60;
+    judgeSumHour += Math.floor(judgeMins / 60);
+    judgeMins -= Math.floor(judgeMins / 60) * 60;
+    return {
+        sumHour: sumHour,
+        mins: mins,
+        judgeSumHour: judgeSumHour,
+        judgeMins: judgeMins
     }
 }
