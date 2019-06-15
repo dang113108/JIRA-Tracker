@@ -298,7 +298,7 @@ $(function() {
             timeSpent = timeSpent.substring(0, timeSpent.length - 1);
             totalTime = timeSpent * 60;
         }
-        comment = comment.replace(/\n/g, "\\n<br>");
+        comment = comment.replace(/\n/g, "<br>");
         workData = '{"comment":"' + comment + '","started":"' + today + '","timeSpentSeconds":"' + totalTime + '"}';
 
         $.ajax({

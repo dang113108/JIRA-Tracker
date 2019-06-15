@@ -1,14 +1,6 @@
 # Release Note For JIRA-Tracker
 #### Trello: [https://trello.com/b/s2hoJ1sD](https://trello.com/b/s2hoJ1sD)
 ------------
-## v0.2.2 (2019/06/15)
-
-#### Bug Fix:
-
-- Fixed an issue with comment wrapping.
-	* 修正Comment換行的問題。
-
-------------
 ## v0.2.1 (2019/06/05)
 
 #### Bug Fix:
