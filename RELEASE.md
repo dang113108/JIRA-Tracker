@@ -10,6 +10,11 @@
 - Fixed an issue where Submit could not be re-timed when paused.
 	* 修正暫停時Submit會無法重新計時的問題。
 
+#### New Feature:
+
+- Now when the LOG time exceeds 6 o'clock, you will be reminded to punch the card.
+	* 現在LOG時間超過六點時，會提醒你打卡。
+
 #### Improvement:
 
 - Improve the display length of unpaid ticket.
