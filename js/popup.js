@@ -11,6 +11,7 @@ $(function() {
     // chrome.storage.sync.clear(function() {});
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover();
+    $('.toast').toast('hide');
 
     var select = $("#issue").selectize({
         valueField: 'title',
@@ -321,6 +322,7 @@ $(function() {
             contentType: 'application/json; charset=UTF-8',
             data: workData,
             success: function(msg) {
+                checkToShowToast();
                 $("#loadingSave").hide();
                 $("#normalSave").show();
                 $("#loadTodayHour").show();
@@ -361,6 +363,14 @@ $(function() {
         });
 
     });
+
+    $(".toast").on("show.bs.toast", function() {
+        $(".toast").css('z-index', 9999);
+    })
+
+    $(".toast").on("hidden.bs.toast", function() {
+        $(".toast").css('z-index', -1);
+    })
 
 });
 
@@ -477,5 +487,13 @@ function changePauseStatus(status) {
         changeSubmitStatus(status);
     } else {
         changeSubmitStatus(status);
+    }
+}
+
+function checkToShowToast() {
+    var today = new Date();
+    var nowHour = today.getHours();
+    if (nowHour >= 18 && nowHour <= 24) {
+        $('.toast').toast('show');
     }
 }
