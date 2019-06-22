@@ -154,6 +154,7 @@ $(function() {
             $("#stopRecord").removeClass('iconButtonDisable');
         }
         if (isPause) {
+            changePauseStatus(true);
             secondConvertAndSetTime(countSec, true);
             $("#startRecord").removeClass('iconButtonDisable');
             $("#pauseRecord").addClass('iconButtonDisable');
@@ -210,7 +211,7 @@ $(function() {
             return
         }
         if (isPause) {
-            isPause = false;
+            changePauseStatus(false);
             chrome.storage.sync.set({ 'isPause': false }, function() {});
         }
         chrome.storage.sync.set({ 'startTime': getTimestamp() }, function() {});
@@ -227,7 +228,7 @@ $(function() {
             return
         }
         isRecord = false;
-        isPause = true;
+        changePauseStatus(true);
         $("#startRecord").removeClass('iconButtonDisable');
         $("#pauseRecord").addClass('iconButtonDisable');
         $("#stopRecord").removeClass('iconButtonDisable');
@@ -242,11 +243,17 @@ $(function() {
         }
         isRecord = false;
         isStop = true;
+        chrome.storage.sync.set({ 'isRecord': false }, function() {});
+        chrome.storage.sync.set({ 'isStop': true }, function() {});
+
+        if (isPause) {
+            changePauseStatus(false);
+            chrome.storage.sync.set({ 'isPause': false }, function() {});
+            stopRecord();
+        }
         $("#startRecord").removeClass('iconButtonDisable');
         $("#pauseRecord").addClass('iconButtonDisable');
         $("#stopRecord").addClass('iconButtonDisable');
-        chrome.storage.sync.set({ 'isRecord': false }, function() {});
-        chrome.storage.sync.set({ 'isStop': true }, function() {});
     });
 
     $("#profile-tab").on('click', function() {
@@ -364,6 +371,7 @@ function getTimestamp() {
 }
 
 function secondConvertAndSetTime(second, reopen = false) {
+    console.log(second);
     seconds = second % 60;
     if (second >= 3600) {
         hour = Math.floor(second / 3600);
@@ -393,17 +401,8 @@ function startRecord() {
     var intervalInt = setInterval(function() {
         if (isStop) {
             clearInterval(intervalInt);
-            isStop = false;
-            secondConvertAndSetTime(countSec + 30, true);
-            countSec = 0;
-            $("#hour").text(0);
-            $("#minute").text(0);
-            $("#second").text(0);
-            for (var dataName in removeData) {
-                chrome.storage.sync.remove(removeData[dataName], function(items) {});
-            }
-            chrome.storage.sync.set({ 'isStop': false }, function() {});
-            $("#timeSpent").change();
+            stopRecord();
+            return;
         } else if (isPause) {
             clearInterval(intervalInt);
             return;
@@ -412,6 +411,20 @@ function startRecord() {
             secondConvertAndSetTime(countSec);
         }
     }, 1000);
+}
+
+function stopRecord() {
+    isStop = false;
+    secondConvertAndSetTime(countSec + 30, true);
+    countSec = 0;
+    $("#hour").text(0);
+    $("#minute").text(0);
+    $("#second").text(0);
+    for (var dataName in removeData) {
+        chrome.storage.sync.remove(removeData[dataName], function(items) {});
+    }
+    chrome.storage.sync.set({ 'isStop': false }, function() {});
+    $("#timeSpent").change();
 }
 
 function updateIssueWorkTime(issueValue) {
@@ -452,4 +465,17 @@ function getIssueNumber(issue) {
     issue = issue.split(" - ");
     issue = issue[0];
     return issue;
+}
+
+function changeSubmitStatus(status) {
+    $("#submitWork").attr('disabled', status);
+}
+
+function changePauseStatus(status) {
+    isPause = status;
+    if (status) {
+        changeSubmitStatus(status);
+    } else {
+        changeSubmitStatus(status);
+    }
 }
