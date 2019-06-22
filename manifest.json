@@ -3,7 +3,7 @@
 
     "name": "JIRA Time Tracker",
     "description": "This extension will help you to log work time.\nMade by Robert Chen.",
-    "version": "1.0",
+    "version": "1.0.1",
 
     "browser_action":
     {
