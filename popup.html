@@ -39,6 +39,22 @@
             </div>
         </div>
     </div>
+    <!-- Toast -->
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+            <div class="toast-header">
+                <strong class="mr-auto">Notice</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                Hello, it's over 18:00 now.<br>
+                Remember to punch out before you leave the office!
+            </div>
+        </div>
+    </div>
+    <!-- Main -->
     <div class="container tab-content">
         <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="home-tab">
             <div align="center" class="title samelineP">
@@ -65,7 +81,7 @@
                         <small class="checkNoPay">
                             <input type="checkbox" id="checkNoPay">
                             <label for="checkNoPay">
-                                The ticket is not paying salary.
+                                Unpaid ticket.
                             </label>
                         </small>
                     </label>

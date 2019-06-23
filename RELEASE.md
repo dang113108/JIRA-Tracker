@@ -1,6 +1,26 @@
 # Release Note For JIRA-Tracker
 #### Trello: [https://trello.com/b/s2hoJ1sD](https://trello.com/b/s2hoJ1sD)
 ------------
+## v1.0.1 (2019/06/22)
+
+#### Bug Fix:
+
+- Fixed an issue with comment wrapping.
+	* 修正Comment換行的問題。
+- Fixed an issue where Submit could not be re-timed when paused.
+	* 修正暫停時Submit會無法重新計時的問題。
+
+#### New Feature:
+
+- Now when the LOG time exceeds 6 o'clock, you will be reminded to punch the card.
+	* 現在LOG時間超過六點時，會提醒你打卡。
+
+#### Improvement:
+
+- Improve the display length of unpaid ticket.
+	* 改善不支薪Ticket的顯示長度。
+
+------------
 ## v0.2.1 (2019/06/05)
 
 #### Bug Fix:
